@@ -1,0 +1,28 @@
+/* main yellow:  */
+html {
+    --main-yellow: #ffb400;
+}
+
+.fine-dining-navbar {
+    background-color: var(--main-yellow);
+}
+
+.fine-dining-jumbotron {
+    height: 350px;
+    background: url('../img/home-jumbotron-alternate.jpg') no-repeat center;
+    position: relative;
+}
+
+.fine-dining-homepage-form-container {
+    width: 600px;
+    height: 200px;
+    background: #ffffff;
+    position: absolute;
+
+    left: 50%;
+    bottom: -35px;
+    transform: translate(-50%);
+
+    border: 5px solid var(--main-yellow);
+    border-radius: 15px;
+}
