@@ -23,11 +23,39 @@ class UserController extends BaseController
         return $this->returnJsonEncodedArray($this->userModel->listAll());
     }
 
+    /**
+     * "/api/user/read_one" Endpoint - Get One user based on ID
+     *
+     * @param int $id
+     */
+    public function readOneAction(int $id)
+    {
+        return $this->returnJsonEncodedArray($this->userModel->readOne($id));
+    }
+
+    /**
+     * "/api/user/create" Endpoint - Create a new user in the system
+     *
+     * @param $jsonData
+     *
+     * @return true/false if the profile had been added or not
+     */
+    public function createAction($jsonData): bool
+    {
+        if (UserUtil::validateUserRegistrationFormData($jsonData)) {
+            $user = new User($jsonData, false);
+
+            return $this->userModel->create($user);
+        } else {
+            return false;
+        }
+    }
+
     // could create a Serializable interface that I can put on the objects
     private function returnJsonEncodedArray($objectArray)
     {
         $recordsArray = [];
-        $recordsArray["records"] = [];
+        $recordsArray["records"] = []; // this may not be necessary
 
         foreach ($objectArray as $object)
         {

@@ -16,7 +16,7 @@ $(document).ready(function(){
 
         // submit form data to api
         $.ajax({
-            url: "http://localhost/food_booking_app/api/user/create.php",
+            url: "http://localhost/food-booking-app/api/user/create.php",
             type : "POST",
             contentType : 'application/json',
             data : form_data,

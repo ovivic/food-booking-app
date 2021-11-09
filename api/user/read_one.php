@@ -8,35 +8,28 @@ header('Content-Type: application/json');
 
 require __DIR__ . "/../../config/main.php";
 
-$user = new UserModel();
-$user->id = isset($_GET['id']) ? $_GET['id'] : die();
-
-$user->readOne();
-
-if ($user->name != null)
+// check if there is a limit argument passed
+$userId = 0;
+if (isset($_GET["id"]) && $_GET["id"] > 0)
 {
-    $user_array = [
-        "id" => $user->id,
-        "name" => $user->name,
-        "email" => $user->email,
-        "username" => $user->username,
-        "password" => $user->password,
-        "salt" => $user->salt,
-        "type" => $user->type,
-    ];
-
-    // set response code - 200 OK
-    http_response_code(200);
-
-    // make it json format
-    echo json_encode($user_array);
+    $userId = $_GET["id"];
+}
+else
+{
+    // do not move forward if there is no id present
+    // may need to add some other things to happen
+    die();
 }
 
-else{
-    // set response code - 404 Not found
-    http_response_code(404);
+$userModel = new UserModel();
+$userController = new UserController($userModel);
 
-    // tell the user product does not exist
-    echo json_encode(array("message" => "User does not exist."));
+// create the json response
+$jsonResponse = [];
+
+if ($userId > 0)
+{
+    $jsonResponse = $userController->readOneAction($userId);
 }
-?>
+
+echo $jsonResponse;

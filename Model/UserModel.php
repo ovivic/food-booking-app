@@ -6,7 +6,7 @@ class UserModel extends Database
 {
     private const TABLE_NAME = "user";
 
-    // read products
+    // read users - returns an array of User entities
     // implement the limit here
     function listAll()
     {
@@ -31,32 +31,26 @@ class UserModel extends Database
         return $userEntities;
     }
 
-    function readOne()
+    // read one user - returns an array containing a single User entity
+    function readOne(int $id)
     {
         $query = "SELECT * FROM " . self::TABLE_NAME . " WHERE `id` = ?";
 
         // prepare query statement
         $stmt = $this->connection->prepare( $query );
+        $stmt->bindParam(1, $id);
 
-        // bind id of product to be updated
-        $stmt->bindParam(1, $this->id);
-
-        // execute query
         $stmt->execute();
 
         // get retrieved row
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // set values to object properties
-        $this->name = $row['name'];
-        $this->email = $row['email'];
-        $this->username = $row['username'];
-        $this->password = $row['password'];
-        $this->salt = $row['salt'];
-        $this->type = $row['type'];
+        $user = new User($row);
+
+        return [$user];
     }
 
-    function create()
+    function create(User $userToAdd)
     {
         // need to make the password nice
 
@@ -65,20 +59,13 @@ class UserModel extends Database
         // prepare query
         $stmt = $this->connection->prepare($query);
 
-        $this->name = htmlspecialchars((strip_tags($this->name)));
-        $this->email = htmlspecialchars((strip_tags($this->email)));
-        $this->username = htmlspecialchars((strip_tags($this->username)));
-        $this->password = htmlspecialchars((strip_tags($this->password)));
-        $this->salt = htmlspecialchars((strip_tags($this->salt)));
-        $this->type = htmlspecialchars((strip_tags($this->type)));
-
         // bind values
-        $stmt->bindParam(":name", $this->name);
-        $stmt->bindParam(":email", $this->email);
-        $stmt->bindParam(":username", $this->username);
-        $stmt->bindParam(":password", $this->password);
-        $stmt->bindParam(":salt", $this->salt);
-        $stmt->bindParam(":type", $this->type);
+        $stmt->bindParam(":name", $userToAdd->getName());
+        $stmt->bindParam(":email", $userToAdd->getEmail());
+        $stmt->bindParam(":username", $userToAdd->getUsername());
+        $stmt->bindParam(":password", $userToAdd->getPassword());
+        $stmt->bindParam(":salt", $userToAdd->getSalt());
+        $stmt->bindParam(":type", $userToAdd->getType());
 
         // execute query
         if($stmt->execute()){

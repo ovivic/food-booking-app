@@ -14,15 +14,31 @@ class User
     // need checks that the user data array is the correct shape
     // need to implement the is new user flag
     // or i create new constructor for different params for that
-    public function __construct($userDataArray, $isNewUser = false)
+    public function __construct($userDataArray, $isExistingUser = true)
     {
-        $this->id = $userDataArray["id"];
-        $this->name = $userDataArray["name"];
-        $this->email = $userDataArray["email"];
-        $this->username = $userDataArray["username"];
-        $this->password = $userDataArray["password"];
-        $this->salt = $userDataArray["salt"];
-        $this->type = $userDataArray["type"];
+
+        if($isExistingUser)
+        {
+            $this->id = $userDataArray["id"];
+            $this->name = $userDataArray["name"];
+            $this->email = $userDataArray["email"];
+            $this->username = $userDataArray["username"];
+            $this->password = $userDataArray["password"];
+            $this->salt = $userDataArray["salt"];
+            $this->type = $userDataArray["type"];
+        }
+        else
+        {
+            $this->name = htmlspecialchars((strip_tags($userDataArray["name"])));
+            $this->email = htmlspecialchars((strip_tags($userDataArray["email"])));
+            $this->username = htmlspecialchars((strip_tags($userDataArray["username"])));
+
+            $this->setSalt(UserUtil::generateSaltFromUserProfile($userDataArray["username"]));
+            $this->setPassword(htmlspecialchars((strip_tags($userDataArray["password"]))));
+
+            // all users created for now are clients
+            $this->type = 1;
+        }
     }
 
     /**
@@ -111,7 +127,7 @@ class User
      */
     public function setPassword(string $password): User
     {
-        $this->password = $password;
+        $this->password = UserUtil::addSaltToPassword($this->getSalt(), $password);
         return $this;
     }
 

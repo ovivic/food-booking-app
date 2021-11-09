@@ -3,13 +3,27 @@
 
 class UserUtil
 {
-    public static function generateSaltFromProfile(User $user): string
+    public static function generateSaltFromUserProfile(string $userName): string
     {
-        return $user->getUsername() . "_salt";
+        return $userName . "_salt";
     }
 
     public static function addSaltToPassword(string $password, string $salt): string
     {
         return md5($password . $salt);
+    }
+
+    public static function validateUserRegistrationFormData($jsonData)
+    {
+        if (
+            !empty($jsonData["name"]) &&
+            !empty($jsonData["email"]) &&
+            !empty($jsonData["username"]) &&
+            !empty($jsonData["password"])
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }
