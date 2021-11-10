@@ -1,28 +1,69 @@
 /* main yellow:  */
 html {
     --main-yellow: #ffb400;
+    --footer-gray: #27272b;
+
+    --homepage-form-overflow: 35px;
+    --homepage-container-padding: 15px;
+
 }
 
-.fine-dining-navbar {
+.fd-navbar {
     background-color: var(--main-yellow);
 }
 
-.fine-dining-jumbotron {
+/* HOME PAGE JUMBOTRON */
+.fd-jumbotron {
     height: 350px;
     background: url('../img/home-jumbotron-alternate.jpg') no-repeat center;
     position: relative;
+    margin-bottom: 0;
 }
 
-.fine-dining-homepage-form-container {
+/* HOME PAGE FORM */
+.fd-homepage-form {
     width: 600px;
     height: 200px;
     background: #ffffff;
     position: absolute;
 
     left: 50%;
-    bottom: -35px;
+    bottom: calc(-1 * var(--homepage-form-overflow));
     transform: translate(-50%);
 
     border: 5px solid var(--main-yellow);
     border-radius: 15px;
+}
+
+.fd-sm-homepage-form {
+    padding: 15px;
+    border-bottom: 10px solid var(--main-yellow);
+}
+
+.fd-homepage-form-button {
+    background-color: var(--main-yellow);
+    width: 100%;
+}
+
+.fd-container {
+    background-color: grey;
+    padding-top: calc(var(--homepage-form-overflow) + var(--homepage-container-padding));
+    padding-bottom: 35px;
+}
+
+.fd-restaurant-card {
+    /*background-color: red;*/
+    margin-bottom: 10px;
+}
+
+/* FOOTER */
+.fd-footer {
+    background-color: var(--footer-gray);
+    color: #ffffff;
+
+    padding-top: 20px
+}
+
+.fd-footer-copyright p {
+    color: rgba(255, 255, 255, 0.5);
 }
