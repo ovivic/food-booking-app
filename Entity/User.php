@@ -14,10 +14,10 @@ class User
     // need checks that the user data array is the correct shape
     // need to implement the is new user flag
     // or i create new constructor for different params for that
-    public function __construct($userDataArray, $isExistingUser = true)
+    public function __construct($userDataArray, $isExistingRecord = true)
     {
 
-        if($isExistingUser)
+        if($isExistingRecord)
         {
             $this->id = $userDataArray["id"];
             $this->name = $userDataArray["name"];

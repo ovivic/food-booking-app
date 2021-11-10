@@ -50,18 +50,4 @@ class UserController extends BaseController
             return false;
         }
     }
-
-    // could create a Serializable interface that I can put on the objects
-    private function returnJsonEncodedArray($objectArray)
-    {
-        $recordsArray = [];
-        $recordsArray["records"] = []; // this may not be necessary
-
-        foreach ($objectArray as $object)
-        {
-            array_push($recordsArray["records"], $object->getSerialization());
-        }
-
-        return json_encode($recordsArray);
-    }
 }
