@@ -8,6 +8,14 @@ html {
 
 }
 
+.fd-no-margin {
+    margin: 0;
+}
+
+.fd-no-padding {
+    padding: 0;
+}
+
 .fd-navbar {
     background-color: var(--main-yellow);
 }

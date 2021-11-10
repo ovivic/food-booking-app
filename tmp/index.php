@@ -247,6 +247,7 @@
                     </p>
                 </div>
             </div>
+        </div>
     </div>
 
     <!-- Optional JavaScript -->
