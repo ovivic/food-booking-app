@@ -4,13 +4,14 @@
 
     $homePageData = APIUtil::getApiResult(RestaurantController::API_READ_ALL);
 
-    function getFoodCategoryCard() {
+    $homePageDishes = ["Pizza", "Sushi", "Burger", "Indian", "Fish & Chips", "Chicken"];
+
+    function getFoodCategoryCard($cuisine) {
         return '
-            <div class="col-lg-4">
+            <div class="col-lg-2">
                 <div class="card fd-restaurant-card">
                     <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card\'s content.</p>
+                        <h5 class="card-title fd-dish-card-title">' . $cuisine . '</h5>
                     </div>
                 </div>
             </div>
@@ -72,12 +73,13 @@
 
     <div class="container fd-container">
         <!-- FOOD CATEGORY SELECTION HERE -->
-        <h1 class="text-center">Choose a dish</h1>
+        <h1 class="fd-homepage-heading">Choose a dish</h1>
+        <p class="fd-homepage-para">Select from our wide range of cuisines, whether you fancy eating out or ordering in</p>
         <div class="row fd-restaurant-card-container">
         <?php
 
-            for ($i = 0; $i < 3; $i++) {
-                echo getFoodCategoryCard();
+            foreach ($homePageDishes as $cuisine) {
+                echo getFoodCategoryCard($cuisine);
             }
 
         ?>

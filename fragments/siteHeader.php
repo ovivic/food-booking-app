@@ -12,5 +12,5 @@
     <!--  the path to the styles is relative to index file  -->
     <link rel="stylesheet" href="assets/styles/style.css">
 
-    <title>Homepage</title>
+    <title>Fine Dining</title>
 </head>
