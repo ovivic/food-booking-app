@@ -4,8 +4,6 @@
 
     $homePageData = APIUtil::getApiResult(RestaurantController::API_READ_ALL);
 
-    var_dump($homePageData["records"]);
-
     function getFoodCategoryCard() {
         return '
             <div class="col-lg-4">
