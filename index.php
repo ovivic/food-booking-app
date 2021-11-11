@@ -2,49 +2,134 @@
 
     require 'config/main.php';
 
-    var_dump(APIUtil::getApiResult(UserController::API_USER_READ_ALL));
+    $homePageData = APIUtil::getApiResult(RestaurantController::API_READ_ALL);
+
+    var_dump($homePageData["records"]);
+
+    function getFoodCategoryCard() {
+        return '
+            <div class="col-lg-4">
+                <div class="card fd-restaurant-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card\'s content.</p>
+                    </div>
+                </div>
+            </div>
+        ';
+    }
+
+    function getRestaurantCard($restaurantObject) {
+        return '
+            <div class="col-lg-4">
+                <div class="card fd-restaurant-card">
+                    <img class="card-img-top" src="https://dummyimage.com/600x200/000/fff.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">' . $restaurantObject["name"] . '</h5>
+                        <p class="card-text">' . $restaurantObject["email"] . '</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+        ';
+    }
 
 ?>
 
 
 <!doctype html>
 <html lang="en">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
-
-    <link rel="stylesheet" href="assets/styles/style.css">
-
-    <title>Homepage</title>
-</head>
+<?php include "fragments/siteHeader.php"; ?>
 
 <body>
-    <!-- navbar will be injected here -->
-    <div id="app-navbar" class="fd-no-margin fd-no-padding"></div>
 
-    <!-- our app will be injected here -->
-    <div id="app-page-content" class="fd-no-margin fd-no-padding"></div>
+    <?php include "fragments/navbar.php" ?>
 
-    <!-- app footer will be injected here -->
-    <div id="app-footer" class="fd-no-margin fd-no-padding"></div>
+    <div class="jumbotron jumbotron-fluid d-none d-md-block fd-jumbotron d-md-none">
+        <div class="fd-homepage-form text-center">
+            <h1>Eat in or takeaway?</h1>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                    <a class="btn btn-primary fd-homepage-form-button" href="#">BOOK TABLE</a>
+                </div>
+                <div class="col-md-4">
+                    <a class="btn btn-primary fd-homepage-form-button" href="#">FIND DELIVERY</a>
+                </div>
+                <div class="col-md-2"></div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<!--            add form here    -->
+
+            </div>
+        </div>
+    </div>
+
+    <!--  UPDATE THE FORM HERE  -->
+    <div class="d-md-none fd-sm-homepage-form">
+        <h1>Eat in or takeaway?</h1>
+
+<!--    add form here    -->
+    </div>
+
+    <div class="container fd-container">
+        <!-- FOOD CATEGORY SELECTION HERE -->
+        <h1 class="text-center">Choose a dish</h1>
+        <div class="row fd-restaurant-card-container">
+        <?php
+
+            for ($i = 0; $i < 3; $i++) {
+                echo getFoodCategoryCard();
+            }
+
+        ?>
+        </div>
 
 
-<!--    <script src="app/app.js"></script>-->
-<!--    <script src="app/homepage.js"></script>-->
+        <!-- FAVOURITE RESTAURANTS SELECTION HERE -->
+        <h1 class="text-center">Your favourites</h1>
+        <div class="row fd-restaurant-card-container">
+        <?php
 
-<!--    <script src="app/user-registration.js"></script>-->
+        foreach ($homePageData["records"] as $record) {
+            echo getRestaurantCard($record);
+        }
 
+        ?>
+        </div>
+
+
+        <!-- FEATURED RESTAURANTS SELECTION HERE -->
+        <h1 class="text-center">Featured</h1>
+        <div class="row fd-restaurant-card-container">
+        <?php
+
+        foreach ($homePageData["records"] as $record) {
+            echo getRestaurantCard($record);
+        }
+
+        ?>
+        </div>
+
+
+        <!-- HIGHEST RATED RESTAURANTS SELECTION HERE -->
+        <h1 class="text-center">HighestRated</h1>
+        <div class="row fd-restaurant-card-container">
+        <?php
+
+        foreach ($homePageData["records"] as $record) {
+            echo getRestaurantCard($record);
+        }
+
+        ?>
+        </div>
+    </div>
+
+    <?php include "fragments/footer.php"; ?>
+
+    <?php include "fragments/siteScripts.php"; ?>
+
+    <!--  add any custom scripts for this page here  -->
 
 </body>
 </html>

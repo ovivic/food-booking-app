@@ -16,6 +16,6 @@ class APIUtil
 
         curl_close($curl);
 
-        return json_decode($result);
+        return json_decode($result, true);
     }
 }
