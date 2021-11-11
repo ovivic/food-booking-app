@@ -4,6 +4,10 @@ require "BaseController.php";
 
 class UserController extends BaseController
 {
+    public const API_USER_READ_ALL = "/api/user/read.php";
+    public const API_USER_READ_ONE = "/api/user/read_one.php";
+    public const API_USER_CREATE = "/api/user/create.php";
+
     private UserModel $userModel;
 
     public function __construct(UserModel $userModel)
