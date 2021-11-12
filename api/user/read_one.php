@@ -18,7 +18,7 @@ else
 {
     // do not move forward if there is no id present
     // may need to add some other things to happen
-    die();
+    die("Not ID for read_one API");
 }
 
 $userModel = new UserModel();

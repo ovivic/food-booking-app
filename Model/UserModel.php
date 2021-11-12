@@ -31,23 +31,25 @@ class UserModel extends Database
         return $userEntities;
     }
 
-    // read one user - returns an array containing a single User entity
-    function readOne(int $id)
+    // read one user - returns a single User
+    function readOneByProperty(string $propertyName,  $propertyValue)
     {
-        $query = "SELECT * FROM " . self::TABLE_NAME . " WHERE `id` = ?";
+        $query = "SELECT * FROM " . self::TABLE_NAME . " WHERE `" . $propertyName . "` = ?";
 
         // prepare query statement
         $stmt = $this->connection->prepare( $query );
-        $stmt->bindParam(1, $id);
+        $stmt->bindParam(1, $propertyValue);
 
         $stmt->execute();
 
         // get retrieved row
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($stmt->rowCount() > 0) {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $user = new User($row);
+            return new User($row);
+        }
 
-        return [$user];
+        return null;
     }
 
     function create(User $userToAdd)

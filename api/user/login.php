@@ -10,22 +10,25 @@ require __DIR__ . "/../../config/main.php";
 
 $userData = json_decode(file_get_contents("php://input"), true);
 
+// verifies if the user login credentials are good
 $userModel = new UserModel();
 $userController = new UserController($userModel);
 
 $responseData = [];
 
-if ($userController->createAction($userData)) {
+$user = $userController->canLogin($userData);
+
+if ($user !== null) {
     $responseData = [
-        'status' => APIUtil::CREATE_SUCCESSFUL,
-        'message' => 'User has been created successfully'
+        'status' => APIUtil::LOGIN_SUCCESSFUL,
+        'message' => 'User can log in',
+        'user' => $user->getSerialization()
     ];
 } else {
     $responseData = [
-        'status' => APIUtil::CREATE_FAIL,
-        'message' => 'User has not been created'
+        'status' => APIUtil::LOGIN_FAIL,
+        'message' => 'User cannot log in'
     ];
 }
 
 echo json_encode($responseData);
-

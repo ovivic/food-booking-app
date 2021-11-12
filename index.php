@@ -2,6 +2,8 @@
 
     require 'config/main.php';
 
+    session_start();
+
     $homePageData = APIUtil::getApiRequest(RestaurantController::API_READ_ALL);
 
     $homePageDishes = ["Pizza", "Sushi", "Burger", "Indian", "Fish & Chips", "Chicken"];

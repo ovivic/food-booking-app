@@ -3,6 +3,12 @@
 
 class APIUtil
 {
+    public const CREATE_SUCCESSFUL = 10000;
+    public const CREATE_FAIL = 10001;
+
+    public const LOGIN_SUCCESSFUL = 10010;
+    public const LOGIN_FAIL = 10011;
+
     public static function validateUserJson() {
 
     }

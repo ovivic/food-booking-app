@@ -2,6 +2,15 @@
 
 require 'config/main.php';
 
+// Initialize the session
+session_start();
+
+// Check if the user is already logged in, if yes then redirect him to welcome page
+if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+    header("Location: index.php");
+    exit;
+}
+
 $nameErr = $emailErr = $usernameErr = $passwordErr = $confirmPasswordError = $accountTypeErr = '';
 $name = $email = $username = $password = $confirmPassword = $accountType = '';
 
@@ -98,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $formStatus = json_decode(APIUtil::postApiRequest(UserController::API_CREATE, json_encode($formArray)), true);
 
         // only send the form data if there is no error on the form
-        if ($formStatus["status"] == UserController::API_CREATE_SUCCESSFUL)
+        if ($formStatus["status"] == APIUtil::CREATE_SUCCESSFUL)
         {
             $userCreated = true;
             // head to the log in page - with a get arg to display a message that you cam from here to let you login

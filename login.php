@@ -34,6 +34,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $password = APIUtil::prepareValueForApi($_POST["password"]);
     }
+
+    $dataArray = [
+        "username" => $username,
+        "password" => $password
+    ];
+
+    if (!$isError) {
+        $requestResponse = json_decode(APIUtil::postApiRequest(UserController::API_LOGIN, json_encode($dataArray)), true);
+
+
+        if ($requestResponse["status"] == APIUtil::LOGIN_SUCCESSFUL) {
+            session_start();
+
+            $_SESSION["loggedin"] = true;
+            $_SESSION["userData"] = $requestResponse["user"];
+
+            header("Location: index.php");
+        } else {
+            $isError = true;
+        }
+    }
+
 }
 
 ?>
@@ -65,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <?php if ($isError) { ?>
             <div class="alert alert-danger" role="alert">
-                <i class="bi bi-x-circle"></i> There is an error in the login form.
+                <i class="bi bi-x-circle"></i> The username and password combination you entered is not valid.
             </div>
         <?php } ?>
 

@@ -11,9 +11,7 @@ class User
     private string $salt;
     private string $type;
 
-    // need checks that the user data array is the correct shape
-    // need to implement the is new user flag
-    // or i create new constructor for different params for that
+
     public function __construct($userDataArray, $isExistingRecord = true)
     {
 
@@ -35,9 +33,7 @@ class User
 
             $this->setSalt(UserUtil::generateSaltFromUserProfile($userDataArray["username"]));
             $this->setPassword(htmlspecialchars((strip_tags($userDataArray["password"]))));
-
-            // all users created for now are clients
-            $this->type = 1;
+            $this->type = htmlspecialchars((strip_tags($userDataArray["type"])));
         }
     }
 
@@ -127,7 +123,7 @@ class User
      */
     public function setPassword(string $password): User
     {
-        $this->password = UserUtil::addSaltToPassword($this->getSalt(), $password);
+        $this->password = UserUtil::addSaltToPassword($password, $this->getSalt());
         return $this;
     }
 

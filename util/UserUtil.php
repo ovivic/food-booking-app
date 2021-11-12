@@ -27,4 +27,15 @@ class UserUtil
 
         return false;
     }
+
+    public static function validateUserLoginFormData($jsonData)
+    {
+        if (!empty($jsonData["username"]) &&
+            !empty($jsonData["password"])
+        ) {
+            return true;
+        }
+
+        return false;
+    }
 }

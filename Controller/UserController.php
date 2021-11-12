@@ -7,9 +7,7 @@ class UserController extends BaseController
     public const API_READ_ALL = "/api/user/read.php";
     public const API_READ_ONE = "/api/user/read_one.php";
     public const API_CREATE = "/api/user/create.php";
-
-    public const API_CREATE_SUCCESSFUL = 10000;
-    public const API_CREATE_FAIL = 10001;
+    public const API_LOGIN = "/api/user/login.php";
 
     private UserModel $userModel;
 
@@ -37,7 +35,14 @@ class UserController extends BaseController
      */
     public function readOneAction(int $id)
     {
-        return $this->returnJsonEncodedArray($this->userModel->readOne($id));
+        $userData = $this->userModel->readOneByProperty("id", $id);
+
+        if ($userData !== null) {
+            return $this->returnJsonEncodedArray([$userData]);
+        }
+
+        // TODO Handle when user cannot be found
+        return false;
     }
 
     /**
@@ -59,5 +64,30 @@ class UserController extends BaseController
         }
 
         return false;
+    }
+
+    /**
+     * "/api/user/login" Endpoint - Verify if the user log in credentials are valid
+     *
+     * @param $jsonData
+     *
+     * @return true/false if the user can be logged in
+     */
+    public function canLogin($jsonData):?User
+    {
+        if (UserUtil::validateUserLoginFormData($jsonData)) {
+            $user = $this->userModel->readOneByProperty("username", $jsonData["username"]);
+
+            if ($user !== null) {
+                $password = htmlspecialchars(stripslashes(trim($jsonData["password"])));
+                $hashedPassword = UserUtil::addSaltToPassword($password, $user->getSalt());
+
+                if ($hashedPassword == $user->getPassword()) {
+                    return $user;
+                }
+            }
+
+            return null;
+        }
     }
 }
