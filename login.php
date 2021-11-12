@@ -115,7 +115,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
 
         <div class="fd-form-footer">
-            <p class="text-center">Don't have an account? Press <a class="fd-link" href="registration.php">here</a> to register</p>
+            <p class="text-center fd-footer-para-border">Don't have an account? Press <a class="fd-link" href="registration.php">here</a> to register.</p>
+            <p class="text-center fd-footer-para-border">Forgot your password? Click <a href="#" class="fd-link">here</a> to reset it.</p>
+            <p class="text-center">Don't want to create an account? Press <a class="fd-link" href="index.php">here</a> to view the menu before you decide to sign in with us.</p>
         </div>
     </div>
 </div>

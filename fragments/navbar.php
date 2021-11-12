@@ -10,20 +10,20 @@
             <ul class="navbar-nav ml-auto">
                 <?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) { ?>
                     <li class="nav-item ">
-                        Welcome, <?php echo isset($_SESSION["user"]) ? $_SESSION["user"]["name"] : "User" ?>
+                        <a class="nav-link fd-navbar-user-page-link" href="userPage.html"><i class="bi bi-person-circle"></i> <?php echo isset($_SESSION["userData"]) ? $_SESSION["userData"]["name"] : "User" ?></a>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link" href="logout.php">Log Out</a>
+                        <a class="nav-link fd-nav-link" href="logout.php">Log Out</a>
                     </li>
                 <?php } else { ?>
                     <li class="nav-item ">
-                        <a class="nav-link" href="registration.php">Register</a>
+                        <a class="nav-link fd-nav-link" href="registration.php">Register</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="login.php">Log In</a>
+                        <a class="nav-link fd-nav-link" href="login.php">Log In</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Help</a>
+                        <a class="nav-link fd-nav-link" href="#">Help</a>
                     </li>
                 <?php } ?>
             </ul>

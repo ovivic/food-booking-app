@@ -43,6 +43,22 @@
     background-color: var(--secondary);
 }
 
+.fd-navbar .fd-navbar-user-page-link {
+    font-weight: bold;
+}
+
+.fd-navbar .fd-nav-link.active,
+.fd-navbar .fd-nav-link:hover,
+.fd-navbar .fd-navbar-user-page-link:hover {
+    text-decoration: underline;
+    color: var(--softer-black);
+    background-color: var(--secondary);
+}
+
+.fd-navbar .fd-nav-link.active {
+    text-decoration: none;
+}
+
 /* HOME PAGE JUMBOTRON */
 .fd-jumbotron {
     height: 350px;
@@ -162,4 +178,10 @@
 
 .fd-form-button-container > p {
     margin-top: 20px;
+}
+
+.fd-form-footer .fd-footer-para-border {
+    border-bottom: 1px solid var(--secondary);
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
 }
