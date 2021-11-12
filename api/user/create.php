@@ -13,9 +13,19 @@ $userData = json_decode(file_get_contents("php://input"), true);
 $userModel = new UserModel();
 $userController = new UserController($userModel);
 
+$responseData = [];
+
 if ($userController->createAction($userData)) {
-    echo "User created";
+    $responseData = [
+        'status' => UserController::API_CREATE_SUCCESSFUL,
+        'message' => 'User has been created successfully'
+    ];
 } else {
-    echo "User NOT created";
+    $responseData = [
+        'status' => UserController::API_CREATE_FAIL,
+        'message' => 'User has not been created'
+    ];
 }
+
+echo json_encode($responseData);
 

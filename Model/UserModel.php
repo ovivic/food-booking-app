@@ -52,8 +52,6 @@ class UserModel extends Database
 
     function create(User $userToAdd)
     {
-        // need to make the password nice
-
         $query = "INSERT INTO " . self::TABLE_NAME . " SET name=:name, email=:email, username=:username, password=:password, salt=:salt, type=:type";
 
         // prepare query
@@ -73,5 +71,23 @@ class UserModel extends Database
         }
 
         return false;
+    }
+
+    function checkUnique(User $user)
+    {
+        $query = "SELECT * FROM " . self::TABLE_NAME . " WHERE username=:username";
+
+        // prepare query
+        $stmt = $this->connection->prepare($query);
+
+        $stmt->bindParam(":username", $user->getUsername());
+
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            return false;
+        }
+
+        return true;
     }
 }

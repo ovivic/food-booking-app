@@ -8,6 +8,9 @@ class UserController extends BaseController
     public const API_READ_ONE = "/api/user/read_one.php";
     public const API_CREATE = "/api/user/create.php";
 
+    public const API_CREATE_SUCCESSFUL = 10000;
+    public const API_CREATE_FAIL = 10001;
+
     private UserModel $userModel;
 
     public function __construct(UserModel $userModel)
@@ -46,16 +49,15 @@ class UserController extends BaseController
      */
     public function createAction($jsonData): bool
     {
-        $decodedData = json_decode($jsonData, true);
-
-        if (UserUtil::validateUserRegistrationFormData($decodedData)) {
-            $user = new User($decodedData, false);
+        if (UserUtil::validateUserRegistrationFormData($jsonData)) {
+            $user = new User($jsonData, false);
 
             // add validation for unique user
-
-            return $this->userModel->create($user);
-        } else {
-            return false;
+            if ($this->userModel->checkUnique($user)) {
+                return $this->userModel->create($user);
+            }
         }
+
+        return false;
     }
 }

@@ -8,11 +8,13 @@ $name = $email = $username = $password = $confirmPassword = $accountType = '';
 $isError = false;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $userCreated = false;
+
     if (empty($_POST["full-name"])) {
         $nameErr = "Name is required";
         $isError = true;
     } else {
-        $name = prepareInputValue($_POST["full-name"]);
+        $name = APIUtil::prepareValueForApi($_POST["full-name"]);
 
         if (!preg_match("/^[a-zA-Z-' ]*$/", $name)) {
             $nameErr = "Only letters and white space allowed";
@@ -26,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $emailErr = "Email address is required";
         $isError = true;
     } else {
-        $email = prepareInputValue($_POST["email"]);
+        $email = APIUtil::prepareValueForApi($_POST["email"]);
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $emailErr = "Invalid email format";
@@ -39,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $usernameErr = "Username is required";
         $isError = true;
     } else {
-        $username = prepareInputValue($_POST["username"]);
+        $username = APIUtil::prepareValueForApi($_POST["username"]);
 
         if (strlen($username) < 5 || strlen($username) > 12) {
             $usernameErr = "Must be between 5 and 12 characters";
@@ -56,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $passwordErr = "Password cannot be empty";
         $isError = true;
     } else {
-        $password = prepareInputValue($_POST["password"]);
+        $password = APIUtil::prepareValueForApi($_POST["password"]);
 
         if (strlen($password) < 8 || strlen($password) > 16) {
             $passwordErr = "Must be between 8 and 16 characters";
@@ -68,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $confirmPasswordError = "The password confirmation cannot be empty";
         $isError = true;
     } else {
-        $confirmPassword = prepareInputValue($_POST["confirm-password"]);
+        $confirmPassword = APIUtil::prepareValueForApi($_POST["confirm-password"]);
 
         if ($confirmPassword != $password) {
             $confirmPasswordError = "The passwords do not match";
@@ -83,28 +85,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $accountType = $_POST["account-type"];
     }
 
-    $formArray = [
-        "name" => $name,
-        "email" => $email,
-        "username" => $username,
-        "password" => $password,
-        "type" => $accountType
-    ];
+    if (!$isError)
+    {
+        $formArray = [
+            "name" => $name,
+            "email" => $email,
+            "username" => $username,
+            "password" => $password,
+            "type" => $accountType
+        ];
 
-    $userModel = new UserModel();
-    $userController = new UserController($userModel);
+        $formStatus = json_decode(APIUtil::postApiRequest(UserController::API_CREATE, json_encode($formArray)), true);
 
-    // only send the form data if there is no error on the form
-    if (!$isError) {
-        $userController->createAction(json_encode($formArray));
-
-        // head to the log in page - with a get arg to display a message that you cam from here to let you login
-        header("login.php?fromRegistration");
+        // only send the form data if there is no error on the form
+        if ($formStatus["status"] == UserController::API_CREATE_SUCCESSFUL)
+        {
+            $userCreated = true;
+            // head to the log in page - with a get arg to display a message that you cam from here to let you login
+            header("Location: login.php?fromSuccessfulRegistration=1");
+        }
     }
-}
-
-function prepareInputValue($value) {
-    return htmlspecialchars(stripslashes(trim($value)));
 }
 
 ?>
@@ -128,19 +128,25 @@ function prepareInputValue($value) {
 
     <div class="fd-form-container">
         <p>Welcome to Fine Dining. You can register as a client if you only want to book try the food, or you can register you own restaurant to start selling your menu. Don't forget to follow us on social media to stay up date to any special offers there might be.</p>
-        
+
+        <?php
+        if (defined($userCreated) && !$userCreated) {
+            echo '<div class="alert alert-danger"><i class="bi bi-x-circle"></i> There is already a user with that username</div>';
+        }
+        ?>
+
         <div class="fd-form-button-container">
             <p class="text-center" style="font-size: 25px; margin: 30px 0;">What sort of account would you like to register?</p>
 
-            <div class="row d-flex justify-content-center" id="fd-registration-buttons">
+            <div class="row d-flex justify-content-center" id="fd-registration-buttons" style="margin-bottom: 30px">
                 <button class="btn fd-usertype-selection-button" style="margin-right: 10px">Client</button>
                 <button class="btn fd-usertype-selection-button" style="margin-left: 10px">Restaurant</button>
             </div>
 
             <?php
-            if (!empty($accountTypeErr)) {
-                echo '<p class="text-center">' . $accountTypeErr . '</p>';
-            }
+                if (!empty($accountTypeErr)) {
+                    echo '<div class="alert alert-danger"><i class="bi bi-x-circle"></i> ' . $accountTypeErr . '</div>';
+                }
             ?>
 
         </div>
