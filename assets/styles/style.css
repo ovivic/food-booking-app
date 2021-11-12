@@ -159,3 +159,7 @@
 .fd-form-footer {
     margin-top: 25px;
 }
+
+.fd-form-button-container > p {
+    margin-top: 20px;
+}

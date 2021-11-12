@@ -19,7 +19,8 @@ class UserUtil
             !empty($jsonData["name"]) &&
             !empty($jsonData["email"]) &&
             !empty($jsonData["username"]) &&
-            !empty($jsonData["password"])
+            !empty($jsonData["password"]) &&
+            !empty($jsonData["type"])
         ) {
             return true;
         }

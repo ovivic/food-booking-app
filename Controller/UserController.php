@@ -46,8 +46,12 @@ class UserController extends BaseController
      */
     public function createAction($jsonData): bool
     {
-        if (UserUtil::validateUserRegistrationFormData($jsonData)) {
-            $user = new User($jsonData, false);
+        $decodedData = json_decode($jsonData, true);
+
+        if (UserUtil::validateUserRegistrationFormData($decodedData)) {
+            $user = new User($decodedData, false);
+
+            // add validation for unique user
 
             return $this->userModel->create($user);
         } else {
