@@ -9,6 +9,9 @@ class APIUtil
     public const LOGIN_SUCCESSFUL = 10010;
     public const LOGIN_FAIL = 10011;
 
+    public const UPDATE_SUCCESSFUL = 10100;
+    public const UPDATE_FAIL = 10101;
+
     public static function validateUserJson() {
 
     }
@@ -40,5 +43,20 @@ class APIUtil
         curl_close($curl);
 
         return $result;
+    }
+
+    public static function putApiRequest(string $url, $jsonData) {
+        $curl = curl_init(URL_ROOT . $url);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $jsonData);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+        $result = curl_exec($curl);
+
+        curl_close($curl);
+
+        return $result;
+
     }
 }

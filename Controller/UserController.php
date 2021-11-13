@@ -8,6 +8,7 @@ class UserController extends BaseController
     public const API_READ_ONE = "/api/user/read_one.php";
     public const API_CREATE = "/api/user/create.php";
     public const API_LOGIN = "/api/user/login.php";
+    public const API_UPDATE = "/api/user/update.php";
 
     private UserModel $userModel;
 
@@ -89,5 +90,19 @@ class UserController extends BaseController
 
             return null;
         }
+    }
+
+    /**
+     * "/api/user/update" Endpoint - Update a user record
+     *
+     * @param $jsonData
+     */
+    public function updateUser($jsonData)
+    {
+        $user = $this->userModel->readOneByProperty("id", $jsonData["id"]);
+
+        $user->setPassword($jsonData["password"]);
+
+        return $this->userModel->updateUserRecord($user);
     }
 }

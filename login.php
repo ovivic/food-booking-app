@@ -8,6 +8,12 @@ if (isset($_GET["fromSuccessfulRegistration"]) && !empty($_GET["fromSuccessfulRe
     $successfullyRegistered = $_GET["fromSuccessfulRegistration"];
 }
 
+$showNotLoggedInMessage = '';
+
+if (isset($_GET["showNotLoggedInMessage"]) && !empty($_GET["showNotLoggedInMessage"])) {
+    $showNotLoggedInMessage = $_GET["showNotLoggedInMessage"];
+}
+
 // Initialize the session
 session_start();
 
@@ -91,23 +97,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         <?php } ?>
 
+        <?php if ($showNotLoggedInMessage) { ?>
+            <div class="alert alert-danger" role="alert">
+                <i class="bi bi-x-circle"></i> This page cannot be accessed if you are not logged in. Please log in below or create an account to continue.
+            </div>
+        <?php } ?>
+
         <form id="user-login-form" action="login.php" method="POST">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" class="form-control" name="username" id="username" placeholder="Enter username" required value="<?php if (!empty($username)) echo $username ?>">
                 <?php
-                if (!empty($usernameErr)) {
-                    echo '<small id="usernameError" class="form-text text-muted">' . $usernameErr . '</small>';
-                }
+                    if (!empty($usernameErr)) {
+                        echo '<small id="usernameError" class="form-text text-muted">' . $usernameErr . '</small>';
+                    }
                 ?>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" class="form-control" name="password" id="password" placeholder="Password" required value="<?php if (!empty($password)) echo $password; ?>">
                 <?php
-                if (!empty($passwordErr)) {
-                    echo '<small id="passwordError" class="form-text text-muted">' . $passwordErr . '</small>';
-                }
+                    if (!empty($passwordErr)) {
+                        echo '<small id="passwordError" class="form-text text-muted">' . $passwordErr . '</small>';
+                    }
                 ?>
             </div>
 

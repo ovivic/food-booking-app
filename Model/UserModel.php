@@ -92,4 +92,29 @@ class UserModel extends Database
 
         return true;
     }
+
+    function updateUserRecord(User $user)
+    {
+        $query = "UPDATE " . self::TABLE_NAME . " SET name=:name, email=:email, username=:username, password=:password, salt=:salt, type=:type WHERE id=:id";
+
+        $stmt = $this->connection->prepare($query);
+
+        // bind values
+        $stmt->bindParam(":name", $user->getName());
+        $stmt->bindParam(":email", $user->getEmail());
+        $stmt->bindParam(":username", $user->getUsername());
+        $stmt->bindParam(":password", $user->getPassword());
+        $stmt->bindParam(":salt", $user->getSalt());
+        $stmt->bindParam(":type", $user->getType());
+
+        // bind id
+        $stmt->bindParam(":id", $user->getId());
+
+        // execute query
+        if($stmt->execute()){
+            return true;
+        }
+
+        return false;
+    }
 }

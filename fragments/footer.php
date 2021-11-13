@@ -6,8 +6,8 @@
                 <h2 class="fd-footer-heading">Customer Support</h2>
                 <ul class="list-unstyled">
                     <li><a href="#"><i class="bi-alarm"></i>Contact us</a></li>
-                    <li><a href="#">Log in</a></li>
-                    <li><a href="#">Sign up</a></li>
+                    <li><a href="login.php">Log in</a></li>
+                    <li><a href="registration.php">Sign up</a></li>
                     <li><a href="#">My account</a></li>
                 </ul>
             </div>

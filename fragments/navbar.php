@@ -1,3 +1,15 @@
+<?php
+
+function getUserPageLink(string $destination)
+{
+    $userFullName = isset($_SESSION["userData"]) ? $_SESSION["userData"]["name"] : "User";
+
+    return '<a class="nav-link fd-navbar-user-page-link" href="' . $destination . '">
+                <i class="bi bi-person-circle"></i> ' . $userFullName . '
+            </a>';
+}
+
+?>
 
 <nav class="navbar navbar-expand-lg navbar-light fd-navbar">
     <div class="container">
@@ -10,7 +22,20 @@
             <ul class="navbar-nav ml-auto">
                 <?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) { ?>
                     <li class="nav-item ">
-                        <a class="nav-link fd-navbar-user-page-link" href="userPage.html"><i class="bi bi-person-circle"></i> <?php echo isset($_SESSION["userData"]) ? $_SESSION["userData"]["name"] : "User" ?></a>
+                        <?php
+                            $accountType = 0;
+
+                            if (isset($_SESSION["userData"]) && $_SESSION["userData"]["type"]) {
+                                $accountType = $_SESSION["userData"]["type"];
+
+                                if ($accountType == 1) {
+                                    echo getUserPageLink("userPageClient.php");
+                                } elseif ($accountType == 2) {
+                                    echo getUserPageLink("userPageRestaurant.php");
+                                }
+                            }
+
+                        ?>
                     </li>
                     <li class="nav-item ">
                         <a class="nav-link fd-nav-link" href="logout.php">Log Out</a>
