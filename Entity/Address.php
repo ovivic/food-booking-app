@@ -13,16 +13,16 @@ class Address
 
     public function __construct($addressDataArray, $isExistingRecord = true)
     {
-        if ($isExistingRecord)
-        {
+        if ($isExistingRecord) {
             $this->id = $addressDataArray["id"];
-            $this->entityId = $addressDataArray["entity_id"];
-            $this->forRestaurant = $addressDataArray["for_restaurant"];
-            $this->street = $addressDataArray["street"];
-            $this->town = $addressDataArray["town"];
-            $this->county = $addressDataArray["county"];
-            $this->postCode = $addressDataArray["post_code"];
         }
+
+        $this->entityId = $addressDataArray["entity_id"];
+        $this->forRestaurant = $addressDataArray["for_restaurant"];
+        $this->street = $addressDataArray["street"];
+        $this->town = $addressDataArray["town"];
+        $this->county = $addressDataArray["county"];
+        $this->postCode = $addressDataArray["post_code"];
     }
 
     /**
@@ -155,7 +155,7 @@ class Address
     {
         $addressString = $this->street . ", " . $this->town . ", ";
 
-        if ($this->county != null) {
+        if ($this->county != null && !empty($this->county)) {
             $addressString .= $this->county . ", ";
         }
 

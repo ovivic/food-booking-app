@@ -8,22 +8,22 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 require __DIR__ . "/../../config/main.php";
 
-$newUserData = json_decode(file_get_contents("php://input"), true);
+$addressData = json_decode(file_get_contents("php://input"), true);
 
-$userModel = new UserModel();
-$userController = new UserController($userModel);
+$addressModel = new AddressModel();
+$addressController = new AddressController($addressModel);
 
 $responseData = [];
 
-if ($userController->updateAction($newUserData)) {
+if ($addressController->updateAction($addressData)) {
     $responseData = [
         'status' => APIUtil::UPDATE_SUCCESSFUL,
-        'message' => 'User has been updated successfully'
+        'message' => 'Address has been updated successfully'
     ];
 } else {
     $responseData = [
         'status' => APIUtil::UPDATE_FAIL,
-        'message' => 'User has not been updated'
+        'message' => 'Address has not been updated'
     ];
 }
 

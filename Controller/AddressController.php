@@ -4,6 +4,8 @@
 class AddressController extends BaseController
 {
     public const API_READ_ONE = "/api/address/read_one.php";
+    public const API_CREATE = "/api/address/create.php";
+    public const API_UPDATE = "/api/address/update.php";
 
     private AddressModel $addressModel;
 
@@ -34,5 +36,36 @@ class AddressController extends BaseController
 
         // TODO Handle when address cannot be found
         return false;
+    }
+
+    /**
+     * "/api/address/create" Endpoint - Create a new address in the system
+     *
+     * @param $jsonData
+     *
+     * @return true/false if the profile had been added or not
+     */
+    public function createAction($jsonData): bool
+    {
+        $address = new Address($jsonData, false);
+
+        return $this->addressModel->create($address);
+    }
+
+    public function updateAction($jsonData)
+    {
+        /** @var Address $address */
+        $address = $this->addressModel->readOneByProperty("id", $jsonData["id"]);
+
+        $address = $address
+            ->setId($jsonData["id"])
+            ->setEntityId($jsonData["entity_id"])
+            ->setForRestaurant($jsonData["for_restaurant"])
+            ->setStreet($jsonData["street"])
+            ->setTown($jsonData["town"])
+            ->setCounty($jsonData["county"])
+            ->setPostCode($jsonData["post_code"]);
+
+        return $this->addressModel->updateRecord($address);
     }
 }

@@ -97,7 +97,7 @@ class UserController extends BaseController
      *
      * @param $jsonData
      */
-    public function updateUser($jsonData)
+    public function updateAction($jsonData)
     {
         $user = $this->userModel->readOneByProperty("id", $jsonData["id"]);
 
