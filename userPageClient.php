@@ -8,12 +8,12 @@ if (!isset($_SESSION["loggedin"]) && !$_SESSION["loggedin"]) {
     header("Location: login.php?showNotLoggedInMessage=1");
 }
 
-function getUserInfoFromSession(string $field) {
-    if (isset($_SESSION["userData"][$field]) && !empty($_SESSION["userData"][$field])) {
-        return $_SESSION["userData"][$field];
-    }
+// API call to load the address for the user
 
-    return null;
+$clientAddress = APIUtil::getApiRequest(AddressController::API_READ_ONE . "?entityId=" . SiteUtil::getUserInfoFromSession("id"));
+
+if ($clientAddress !== null) {
+    $_SESSION["userData"]["address"] = $clientAddress["records"][0]["addressString"];
 }
 
 $password = '';
@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $isFormValid = true;
 
         $formData = [
-            "id" => getUserInfoFromSession("id"),
+            "id" => SiteUtil::getUserInfoFromSession("id"),
             "password" => $password
         ];
 
@@ -86,16 +86,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="fd-form-container">
         <h3>Personal Details</h3>
         <div class="fd-user-detail-container">
-            <p><span>Name: </span><?php echo getUserInfoFromSession("name"); ?></p>
+            <p><span>Name: </span><?php echo SiteUtil::getUserInfoFromSession("name"); ?></p>
         </div>
         <div class="fd-user-detail-container">
-            <p><span>Email: </span><?php echo getUserInfoFromSession("email"); ?></p>
+            <p><span>Email: </span><?php echo SiteUtil::getUserInfoFromSession("email"); ?></p>
         </div>
-        <p>ADD ADDRESS HERE</p>
+
+        <?php if (isset($_SESSION["userData"]["address"]) && !empty($_SESSION["userData"]["address"])) { ?>
+            <div class="fd-user-detail-container">
+                <p><span>Address: </span><?php echo SiteUtil::getUserInfoFromSession("address"); ?></p>
+            </div>
+        <?php } ?>
 
         <h3>Account Details</h3>
         <div class="fd-user-detail-container">
-            <p><span>Username: </span><?php echo getUserInfoFromSession("username"); ?></p>
+            <p><span>Username: </span><?php echo SiteUtil::getUserInfoFromSession("username"); ?></p>
         </div>
 
         <?php if ($isFormValid && $updatedStatus == true) { ?>
