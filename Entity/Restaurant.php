@@ -12,6 +12,11 @@ class Restaurant
 
     private bool $isOpen;
 
+    private ?string $description;
+    private bool $isDiningIn;
+    private bool $isDelivery;
+    private ?float $rating;
+
     public function __construct($restaurantDataArray, $isExistingRecord = true)
     {
         if ($isExistingRecord)
@@ -22,6 +27,10 @@ class Restaurant
             $this->email = $restaurantDataArray["email"];
             $this->phone = $restaurantDataArray["phone"];
             $this->isOpen = $restaurantDataArray["open"];
+            $this->description = $restaurantDataArray["description"];
+            $this->isDiningIn = $restaurantDataArray["dine_in"];
+            $this->isDelivery = $restaurantDataArray["delivery"];
+            $this->rating = $restaurantDataArray["rating"];
         }
     }
 
@@ -134,6 +143,78 @@ class Restaurant
     }
 
     /**
+     * @return string
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param ?string $description
+     * @return Restaurant
+     */
+    public function setDescription(?string $description): Restaurant
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDiningIn(): bool
+    {
+        return $this->isDiningIn;
+    }
+
+    /**
+     * @param bool $isDiningIn
+     * @return Restaurant
+     */
+    public function setIsDiningIn(bool $isDiningIn): Restaurant
+    {
+        $this->isDiningIn = $isDiningIn;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDelivery(): bool
+    {
+        return $this->isDelivery;
+    }
+
+    /**
+     * @param bool $isDelivery
+     * @return Restaurant
+     */
+    public function setIsDelivery(bool $isDelivery): Restaurant
+    {
+        $this->isDelivery = $isDelivery;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRating(): ?float
+    {
+        return $this->rating;
+    }
+
+    /**
+     * @param ?float $rating
+     * @return Restaurant
+     */
+    public function setRating(?float $rating): Restaurant
+    {
+        $this->rating = $rating;
+        return $this;
+    }
+
+    /**
      * custom serialization for the object
      */
     public function getSerialization()
@@ -144,7 +225,11 @@ class Restaurant
             "name" => $this->getName(),
             "email" => $this->getEmail(),
             "phone" => $this->getPhone(),
-            "is_open" => $this->isOpen()
+            "is_open" => $this->isOpen(),
+            "description" => $this->getDescription(),
+            "dine_in" => $this->isDiningIn(),
+            "delivery" => $this->isDelivery(),
+            "rating" => $this->getRating()
         ];
     }
 }

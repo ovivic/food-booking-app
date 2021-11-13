@@ -1,7 +1,7 @@
 <?php
 
 // HACK to turn off some notices being thrown by the UserModel
-error_reporting(0);
+//error_reporting(0);
 
 define("PROJECT_ROOT_PATH", __DIR__ . "/../");
 define("PROJECT_FOLDER_NAME", "food-booking-app");

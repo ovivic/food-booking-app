@@ -28,7 +28,6 @@ $isErrorAddress = false;
 $isAddressFormValid = false;
 $addressUpdatedStatus = false;
 
-// password reset form
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userPageFormType"])) {
     if ($_POST["userPageFormType"] == SiteUtil::USER_PAGE_PASSWORD_RESET_FORM) // the password reset form was submitted
     {
@@ -166,11 +165,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userPageFormType"])) {
             <p><span>Name: </span><?php echo SiteUtil::getUserInfoFromSession("name"); ?></p>
         </div>
         <div class="fd-user-detail-container">
-            <p>
-                <span>Email: </span>
-                <?php echo SiteUtil::getUserInfoFromSession("email"); ?>
-
-            </p>
+            <p><span>Email: </span><?php echo SiteUtil::getUserInfoFromSession("email"); ?></p>
         </div>
 
         <?php if (isset($_SESSION["userData"]["address"]) && !empty($_SESSION["userData"]["address"])) { ?>
@@ -219,6 +214,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userPageFormType"])) {
             <button type="submit" class="btn btn fd-button mb-2">Submit</button>
         </form>
 
+        <div class="fd-section-delim"></div>
 
         <h3>Account Details</h3>
         <div class="fd-user-detail-container">

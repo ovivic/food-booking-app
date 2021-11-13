@@ -27,6 +27,13 @@
     background-color: var(--secondary);
 }
 
+div.fd-section-delim {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding: 1px;
+    background-color: var(--secondary);
+}
+
 /* NAVBAR */
 .fd-navbar {
     background-color: var(--primary);
@@ -202,4 +209,5 @@
 .fd-user-detail-container > p > span {
     font-weight: bold;
 }
+
 
