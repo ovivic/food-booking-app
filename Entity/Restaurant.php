@@ -3,6 +3,9 @@
 
 class Restaurant
 {
+    public const DINE_IN = 1;
+    public const DELIVERY = 2;
+
     private int $id;
     private int $user_id;
 

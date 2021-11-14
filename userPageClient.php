@@ -199,8 +199,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userPageFormType"])) {
         <?php } ?>
 
         <form class="form-inline" id="userpage-address-form" method="post" action="userPageClient.php">
-
-
             <input type="text" name="user-street" class="form-control mb-2 mr-sm-2 <?php echo $streetErr ? 'fd-form-input-error' : ''; ?>" value="<?php echo $clientAddress !== null ? $clientAddress["records"][0]["street"] : '' ?>" placeholder="Street & Number" required>
 
             <input type="text" name="user-town" class="form-control mb-2 mr-sm-2 <?php echo $townErr ? 'fd-form-input-error' : ''; ?>" value="<?php echo $clientAddress !== null ? $clientAddress["records"][0]["town"] : '' ?>" placeholder="Town" required>
