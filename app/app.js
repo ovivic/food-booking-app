@@ -7,4 +7,3 @@ function changePageTitle(page_title){
     // change title tag
     document.title=page_title;
 }
-

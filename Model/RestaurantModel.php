@@ -47,4 +47,31 @@ class RestaurantModel extends Database
 
         return null;
     }
+
+    // returns the ID of the insertion, or false if problem
+    public function create(Restaurant $restaurant)
+    {
+        $query = "INSERT INTO " . self::TABLE_NAME . " SET user_id=:userID, name=:name, email=:email, phone=:phone, open=:open, description=:description, dine_in=:dineIn, delivery=:delivery";
+
+        // prepare query
+        $stmt = $this->connection->prepare($query);
+
+        $stmt->bindParam(":userID", $restaurant->getUserId());
+        $stmt->bindParam(":name", $restaurant->getName());
+        $stmt->bindParam(":email", $restaurant->getEmail());
+        $stmt->bindParam(":phone", $restaurant->getPhone());
+        $stmt->bindParam(":open", $restaurant->isOpen());
+        $stmt->bindParam(":description", $restaurant->getDescription());
+        $stmt->bindParam(":dineIn", $restaurant->isDiningIn());
+        $stmt->bindParam(":delivery", $restaurant->isDelivery());
+
+        // need to return the ID of the restaurant
+        // execute query
+        if($stmt->execute()){
+            return $this->connection->lastInsertId();
+        }
+
+        return false;
+
+    }
 }

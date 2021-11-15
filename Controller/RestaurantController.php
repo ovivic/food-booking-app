@@ -41,4 +41,14 @@ class RestaurantController extends BaseController
         // TODO Handle when address cannot be found
         return false;
     }
+
+    /**
+     * "/api/restaurant/create" Endpoint - Create Restaurant record
+     */
+    public function createAction($jsonData)
+    {
+        $restaurant = new Restaurant($jsonData, false);
+
+        return $this->restaurantModel->create($restaurant);
+    }
 }

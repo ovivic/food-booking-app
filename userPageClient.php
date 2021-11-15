@@ -268,7 +268,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userPageFormType"])) {
 <?php include "fragments/siteScripts.php"; ?>
 
 <!--  add any custom scripts for this page here  -->
-<script src="app/user-page.js"></script>
+<script src="app/user-page-client.js"></script>
 
 </body>
 </html>

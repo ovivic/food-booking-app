@@ -22,19 +22,19 @@ class Restaurant
 
     public function __construct($restaurantDataArray, $isExistingRecord = true)
     {
-        if ($isExistingRecord)
-        {
+        if ($isExistingRecord) {
             $this->id = $restaurantDataArray["id"];
-            $this->user_id = $restaurantDataArray["user_id"];
-            $this->name = $restaurantDataArray["name"];
-            $this->email = $restaurantDataArray["email"];
-            $this->phone = $restaurantDataArray["phone"];
-            $this->isOpen = $restaurantDataArray["open"];
-            $this->description = $restaurantDataArray["description"];
-            $this->isDiningIn = $restaurantDataArray["dine_in"];
-            $this->isDelivery = $restaurantDataArray["delivery"];
             $this->rating = $restaurantDataArray["rating"];
         }
+
+        $this->user_id = $restaurantDataArray["user_id"];
+        $this->name = $restaurantDataArray["name"];
+        $this->email = $restaurantDataArray["email"];
+        $this->phone = $restaurantDataArray["phone"];
+        $this->isOpen = $restaurantDataArray["open"];
+        $this->description = $restaurantDataArray["description"];
+        $this->isDiningIn = $restaurantDataArray["dine_in"];
+        $this->isDelivery = $restaurantDataArray["delivery"];
     }
 
     /**

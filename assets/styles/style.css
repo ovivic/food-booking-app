@@ -202,7 +202,7 @@ div.fd-section-delim {
 }
 
 .fd-form-text-error {
-    color: red;
+    color: red !important;
 }
 
 /* USER PAGE */
