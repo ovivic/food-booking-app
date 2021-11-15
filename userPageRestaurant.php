@@ -200,9 +200,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userPageFormType"])) {
 
                 $restaurantFormData["address"]["id"] = $pageData["restAddress"]["id"];
 
-                var_dump($pageData["restAddress"]);
-                var_dump($restaurantFormData["address"]);
-
                 $addressRequestResponse = json_decode(APIUtil::putApiRequest(AddressController::API_UPDATE, json_encode($restaurantFormData["address"])), true);
 
                 if ($addressRequestResponse["status"] == APIUtil::UPDATE_SUCCESSFUL) {
