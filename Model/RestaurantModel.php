@@ -74,4 +74,32 @@ class RestaurantModel extends Database
         return false;
 
     }
+
+    public function update(Restaurant $restaurant)
+    {
+        $query = "UPDATE " . self::TABLE_NAME . " SET user_id=:userID, name=:name, email=:email, phone=:phone, open=:open, description=:description, dine_in=:dineIn, delivery=:delivery, rating=:rating WHERE id=:id";
+
+        // prepare query
+        $stmt = $this->connection->prepare($query);
+
+        $stmt->bindParam(":id", $restaurant->getId());
+        $stmt->bindParam(":userID", $restaurant->getUserId());
+        $stmt->bindParam(":name", $restaurant->getName());
+        $stmt->bindParam(":email", $restaurant->getEmail());
+        $stmt->bindParam(":phone", $restaurant->getPhone());
+        $stmt->bindParam(":open", $restaurant->isOpen());
+        $stmt->bindParam(":description", $restaurant->getDescription());
+        $stmt->bindParam(":dineIn", $restaurant->isDiningIn());
+        $stmt->bindParam(":delivery", $restaurant->isDelivery());
+        $stmt->bindParam(":rating", $restaurant->getRating());
+
+        // need to return the ID of the restaurant
+        // execute query
+        if($stmt->execute()){
+            return true;
+        }
+
+        return false;
+
+    }
 }

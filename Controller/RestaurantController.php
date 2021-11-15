@@ -28,6 +28,7 @@ class RestaurantController extends BaseController
      * "/api/restaurant/read_one" Endpoint - Get Restaurant details
      *
      * @param $userId
+     * @return false|string
      */
     public function readOneAction($userId)
     {
@@ -44,11 +45,37 @@ class RestaurantController extends BaseController
 
     /**
      * "/api/restaurant/create" Endpoint - Create Restaurant record
+     * @param $jsonData
+     * @return false
      */
     public function createAction($jsonData)
     {
         $restaurant = new Restaurant($jsonData, false);
 
         return $this->restaurantModel->create($restaurant);
+    }
+
+    /**
+     * "/api/restaurant/update" Endpoint - Update Restaurant record
+     * @param $jsonData
+     */
+    public function updateAction($jsonData)
+    {
+        /** @var Restaurant $restaurant */
+        $restaurant = $this->restaurantModel->readOneByProperty("id", $jsonData["id"]);
+
+        $restaurant = $restaurant
+            ->setId($jsonData["id"])
+            ->setUserId($jsonData["user_id"])
+            ->setName($jsonData["name"])
+            ->setEmail($jsonData["email"])
+            ->setPhone($jsonData["phone"])
+            ->setIsOpen($jsonData["open"])
+            ->setDescription($jsonData["description"])
+            ->setIsDiningIn($jsonData["dine_in"])
+            ->setIsDelivery($jsonData["delivery"])
+            ->setRating($jsonData["rating"]);
+
+        return $this->restaurantModel->update($restaurant);
     }
 }

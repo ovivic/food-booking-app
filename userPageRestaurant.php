@@ -177,7 +177,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userPageFormType"])) {
                     "delivery" => $restDeliv
                 ],
                 "address" => [
-                    "entity_id" => null, //!!!!! THIS NEEDS TO BE SET AFTER CREATING THE RESTAURANT RECORD
+                    "entity_id" => $pageData !== null ? $pageData["restAddress"]["entityId"] : null, //!!!!! THIS NEEDS TO BE SET AFTER CREATING THE RESTAURANT RECORD
                     "for_restaurant" => true,
                     "street" => $restStreet,
                     "town" => $restTown,
@@ -188,7 +188,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userPageFormType"])) {
 
             if ($pageData !== null)
             {
-                var_dump("UPDATE");
+                $restaurantFormData["restaurant"]["id"] = $pageData["restaurant"]["id"];
+
+                $restaurantRequestResponse = json_decode(APIUtil::putApiRequest(RestaurantController::API_UPDATE, json_encode($restaurantFormData["restaurant"])), true);
+
+                if ($restaurantRequestResponse["status"] == APIUtil::UPDATE_SUCCESSFUL) {
+                    $restUpdateStatus = true;
+                } elseif ($restaurantRequestResponse["status"] == APIUtil::UPDATE_FAIL) {
+                    $restUpdateStatus = false;
+                }
+
+                $restaurantFormData["address"]["id"] = $pageData["restAddress"]["id"];
+
+                var_dump($pageData["restAddress"]);
+                var_dump($restaurantFormData["address"]);
+
+                $addressRequestResponse = json_decode(APIUtil::putApiRequest(AddressController::API_UPDATE, json_encode($restaurantFormData["address"])), true);
+
+                if ($addressRequestResponse["status"] == APIUtil::UPDATE_SUCCESSFUL) {
+                    $restUpdateStatus = true;
+                } elseif ($addressRequestResponse["status"] == APIUtil::UPDATE_FAIL) {
+                    $restUpdateStatus = false;
+                }
             }
             else
             {
@@ -217,9 +238,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userPageFormType"])) {
                         $restUpdateStatus = false;
                     }
                 }
-
-                // head back to this page to fill the data of the form after submitting.
-                header("Location: userPageRestaurant.php?formUpdated=" . $restUpdateStatus);
             }
         }
     }
@@ -295,8 +313,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userPageFormType"])) {
     </div>
 
     <h1 class="fd-form-page-heading">Restaurant Details</h1>
-    <?php var_dump($pageData); ?>
-
     <div class="fd-form-container">
         <?php if ($pageData == null) { ?>
             <div class="alert alert-warning" role="alert">
@@ -304,11 +320,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userPageFormType"])) {
             </div>
         <?php } ?>
 
-        <?php if ($isRestFormValid && $restaurantFormStatus == true) { ?>
+        <?php if ($isRestFormValid && $restUpdateStatus == true) { ?>
             <div class="alert alert-success" role="alert">
                 <i class="bi bi-check-circle"></i> Your restaurant has been saved successfully.
             </div>
-        <?php } elseif ($isRestFormValid && $restaurantFormStatus == false) { ?>
+        <?php } elseif ($isRestFormValid && $restUpdateStatus == false) { ?>
             <div class="alert alert-danger" role="alert">
                 <i class="bi bi-x-circle"></i> There has been an issue with saving the Restaurant. Please make sure to fill all of the fields.
             </div>
@@ -316,6 +332,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userPageFormType"])) {
 
         <p>Use this form to add or edit the restaurant record associated with your account. Press the "Enable Form" button to enable the form for editing.</p>
         <p>After submitting the form for the first time, you will be able to mark it as open for business at which point it will be available in searches.</p>
+        <p>If the data you entered in the form does not appear after submitting, try reloading the page.</p>
 
         <div class="d-flex">
             <button type="button" id="restaurant-form-enable" class="btn fd-button">Enable Form</button>
