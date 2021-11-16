@@ -23,4 +23,11 @@ class MenuItemController extends BaseController
     {
         return $this->menuItemModel->delete($itemId);
     }
+
+    public function createAction($jsonData)
+    {
+        $menuItem = new MenuItem($jsonData, false);
+
+        return $this->menuItemModel->create($menuItem);
+    }
 }

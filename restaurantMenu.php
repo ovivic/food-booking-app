@@ -31,6 +31,15 @@ if (isset($menuItemData["records"])) {
     $pageData["menuItems"] = $menuItemData["records"];
 }
 
+// item-delete form variables
+$itemDeleteFormError = false;
+
+// item-add form variables
+$itemName = $itemPrice = '';
+$itemNameErr = $itemPriceErr = false;
+$isErrorItemAdd = false;
+$itemAddFormError = false;
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["restMenuFormType"])) {
     if ($_POST["restMenuFormType"] == SiteUtil::RESTAURANT_MENU_PAGE_DELETE_ITEM) {
 
@@ -39,13 +48,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["restMenuFormType"])) {
         $itemDeleteResponse = json_decode(APIUtil::deleteApiRequest(MenuItemController::API_DELETE . "?menuItemId=" . $menuItemId), true);
 
         // redirect to this page to reload page data
-        if ($itemDeleteResponse["status"] == APIUtil::DELETE_SUCCESSFUL) {
+        if ($itemDeleteResponse["status"] == APIUtil::DELETE_SUCCESSFUL)
+        {
             header("Location: restaurantMenu.php");
+        }
+        else
+        {
+            $itemDeleteFormError = true;
         }
     }
 
     if ($_POST["restMenuFormType"] == SiteUtil::RESTAURANT_MENU_PAGE_ADD_ITEM) {
+        if (empty($_POST["menuItemName"])) {
+            $itemNameErr = true;
+            $isErrorItemAdd = true;
+        } else {
+            $itemName = APIUtil::prepareValueForApi($_POST["menuItemName"]);
+        }
 
+        if (empty($_POST["menuItemPrice"])) {
+            $itemPriceErr = true;
+            $isErrorItemAdd = true;
+        } else {
+            $itemPrice = (float) APIUtil::prepareValueForApi($_POST["menuItemPrice"]);
+        }
+
+        if(!$isErrorItemAdd)
+        {
+            $itemAddFormData = [
+                "restaurant_id" => $pageData["restaurant"]["id"],
+                "name" => $itemName,
+                "price" => $itemPrice
+            ];
+
+            $menuItemAddResponse = json_decode(APIUtil::postApiRequest(MenuItemController::API_CREATE, json_encode($itemAddFormData)), true);
+
+            if (isset($menuItemAddResponse["status"]) == APIUtil::CREATE_SUCCESSFUL)
+            {
+                header("Location: restaurantMenu.php");
+            }
+            else
+            {
+                $itemAddFormError = true;
+            }
+
+        }
     }
 
 }
@@ -71,12 +118,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["restMenuFormType"])) {
             <a class="btn fd-button" href="userPageRestaurant.php">Restaurant Page</a>
         </div>
 
-        <form action="restaurantMenu.php" method="post">
-            <input type='hidden' name='restMenuFormType' value='<?php SiteUtil::RESTAURANT_MENU_PAGE_ADD_ITEM ?>'>
+        <?php if ($itemDeleteFormError) { ?>
+            <div class="alert alert-danger" role="alert">
+                <i class="bi bi-x-circle"></i> There has been an issue when deleting the item
+            </div>
+        <?php } ?>
+
+        <?php if ($itemAddFormError) { ?>
+            <div class="alert alert-danger" role="alert">
+                <i class="bi bi-x-circle"></i> There has been an issue when adding the item
+            </div>
+        <?php } ?>
+
+        <form action="restaurantMenu.php" method="POST">
+            <input type='hidden' name='restMenuFormType' value="<?php echo SiteUtil::RESTAURANT_MENU_PAGE_ADD_ITEM ?>">
 
             <div class="form-row align-items-center mb-2">
                 <div class="col-auto">
-                    <input type="text" class="form-control" name="menuItemName" placeholder="Item Name" required>
+                    <input type="text" class="form-control" name="menuItemName" placeholder="Item Name" value="<?php echo (isset($_POST["menuItemName"]) && $_POST["menuItemName"]) ? $_POST["menuItemName"] : '' ?>" required>
                 </div>
 
                 <div class="col-auto">
@@ -84,7 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["restMenuFormType"])) {
                         <div class="input-group-prepend">
                             <div class="input-group-text">&pound;</div>
                         </div>
-                        <input type="text" class="form-control" name="menuItemPrice" placeholder="Item Price" required>
+                        <input type="number" step="0.001" class="form-control" name="menuItemPrice" placeholder="Item Price" value="<?php echo (isset($_POST["menuItemPrice"]) && $_POST["menuItemPrice"]) ? $_POST["menuItemPrice"] : '' ?>" required>
                     </div>
                 </div>
 
