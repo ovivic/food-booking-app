@@ -8,10 +8,7 @@ require __DIR__ . "/../../config/main.php";
 
 if (!isset($_GET["restaurantId"]))
 {
-    echo json_encode([
-        "status" => APIUtil::MISSING_DATA,
-        "message" => "The ID of the restaurant is missing"
-    ]);
+    echo null;
     exit();
 }
 
@@ -19,10 +16,7 @@ $restaurantId = (isset($_GET["restaurantId"]) && $_GET["restaurantId"]) ? $_GET[
 
 if ($restaurantId == null)
 {
-    echo json_encode([
-        "status" => APIUtil::MISSING_DATA,
-        "message" => "The ID of the restaurant is missing"
-    ]);
+    echo null;
     exit();
 }
 

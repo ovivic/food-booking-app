@@ -222,4 +222,6 @@ a.fd-button.fd-disabled {
     font-weight: bold;
 }
 
-
+form.fd-menu-item-delete-form {
+    margin-bottom: 0;
+}

@@ -65,4 +65,14 @@ class MenuItemModel extends Database
 
         return false;
     }
+
+    public function delete($itemId)
+    {
+        $query = "DELETE FROM " . self::TABLE_NAME . " WHERE id=?";
+
+        $stmt = $this->connection->prepare($query);
+        $stmt->bindParam(1, $itemId);
+
+        return $stmt->execute();
+    }
 }

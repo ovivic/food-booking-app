@@ -4,8 +4,8 @@
 class MenuItemController extends BaseController
 {
     public const API_READ_ALL = "/api/menuItem/readAll.php";
-    public const API_CREATE = "/api/restaurant/create.php";
-    public const API_UPDATE = "/api/restaurant/update.php";
+    public const API_CREATE = "/api/menuItem/create.php";
+    public const API_DELETE = "/api/menuItem/delete.php";
 
     private MenuItemModel $menuItemModel;
 
@@ -17,5 +17,10 @@ class MenuItemController extends BaseController
     public function readAllAction($restaurantId)
     {
         return $this->returnJsonEncodedArray($this->menuItemModel->readAllForRestaurant($restaurantId));
+    }
+
+    public function deleteAction($itemId)
+    {
+        return $this->menuItemModel->delete($itemId);
     }
 }

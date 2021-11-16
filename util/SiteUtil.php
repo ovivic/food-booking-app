@@ -7,6 +7,10 @@ class SiteUtil
     public const USER_PAGE_ADDRESS_FORM = 11;
     public const USER_PAGE_RESTAURANT_FORM = 12;
 
+    public const RESTAURANT_MENU_PAGE_DELETE_ITEM = 10;
+    public const RESTAURANT_MENU_PAGE_ADD_ITEM = 11;
+
+    /* ERROR PAGE */
     public const ERROR_CANNOT_ACCESS = 1;
     public const ERROR_NO_RESTAURANT = 2;
 
@@ -20,6 +24,10 @@ class SiteUtil
         }
 
         return null;
+    }
+
+    public static function formatCurrency($value)  {
+        return "&pound;" . number_format($value, 2);
     }
 
 }
