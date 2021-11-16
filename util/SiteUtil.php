@@ -10,6 +10,9 @@ class SiteUtil
     public const RESTAURANT_MENU_PAGE_DELETE_ITEM = 10;
     public const RESTAURANT_MENU_PAGE_ADD_ITEM = 11;
 
+    public const RESTAURANT_TABLES_PAGE_DELETE_TABLE = 10;
+    public const RESTAURANT_TABLES_PAGE_ADD_TABLE = 11;
+
     /* ERROR PAGE */
     public const ERROR_CANNOT_ACCESS = 1;
     public const ERROR_NO_RESTAURANT = 2;

@@ -43,3 +43,10 @@ require_once PROJECT_ROOT_PATH . "/Entity/Address.php";
 require_once PROJECT_ROOT_PATH . "/Controller/MenuItemController.php";
 require_once PROJECT_ROOT_PATH . "/Model/MenuItemModel.php";
 require_once PROJECT_ROOT_PATH . "/Entity/MenuItem.php";
+
+/**
+ * Load RestaurantTable classes
+ */
+require_once PROJECT_ROOT_PATH . "/Controller/RestaurantTableController.php";
+require_once PROJECT_ROOT_PATH . "/Model/RestaurantTableModel.php";
+require_once PROJECT_ROOT_PATH . "/Entity/RestaurantTable.php";

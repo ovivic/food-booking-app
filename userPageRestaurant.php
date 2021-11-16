@@ -332,7 +332,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userPageFormType"])) {
 
             <div>
                 <a class="btn fd-button <?php echo $pageData === null ? 'fd-disabled' : ''?>" href="restaurantMenu.php">Set Menu</a>
-                <a class="btn fd-button <?php echo $pageData === null ? 'fd-disabled' : ''?>" href="restaurantMenu.php" >Set Tables and Bookings</a>
+                <a class="btn fd-button <?php echo $pageData === null ? 'fd-disabled' : ''?>" href="restaurantTables.php" >Set Tables and Bookings</a>
                 <a class="btn fd-button <?php echo $pageData === null ? 'fd-disabled' : ''?>" href="restaurantMenu.php" >View Orders</a>
             </div>
 
