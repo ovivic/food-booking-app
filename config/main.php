@@ -1,7 +1,7 @@
 <?php
 
 // HACK to turn off some notices being thrown by the UserModel
-error_reporting(0);
+//error_reporting(0);
 
 define("PROJECT_ROOT_PATH", __DIR__ . "/../");
 define("PROJECT_FOLDER_NAME", "food-booking-app");
@@ -36,3 +36,10 @@ require_once PROJECT_ROOT_PATH . "/Entity/Restaurant.php";
 require_once PROJECT_ROOT_PATH . "/Controller/AddressController.php";
 require_once PROJECT_ROOT_PATH . "/Model/AddressModel.php";
 require_once PROJECT_ROOT_PATH . "/Entity/Address.php";
+
+/**
+ * Load MenuItem classes
+ */
+require_once PROJECT_ROOT_PATH . "/Controller/MenuItemController.php";
+require_once PROJECT_ROOT_PATH . "/Model/MenuItemModel.php";
+require_once PROJECT_ROOT_PATH . "/Entity/MenuItem.php";

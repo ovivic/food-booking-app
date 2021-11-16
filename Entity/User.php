@@ -3,6 +3,9 @@
 
 class User
 {
+    public const CLIENT_TYPE = 1;
+    public const RESTAURANT_TYPE = 2;
+
     private int $id;
     private string $name;
     private string $email;

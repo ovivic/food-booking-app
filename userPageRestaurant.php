@@ -252,10 +252,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userPageFormType"])) {
 <?php include "fragments/navbar.php" ?>
 
 <div class="container">
-
-</div>
-
-<div class="container">
     <h1 class="fd-form-page-heading">Account Details</h1>
     <div class="fd-form-container">
         <h3>Personal Details</h3>
@@ -331,8 +327,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userPageFormType"])) {
         <p>After submitting the form for the first time, you will be able to mark it as open for business at which point it will be available in searches.</p>
         <p>If the data you entered in the form does not appear after submitting, try reloading the page.</p>
 
-        <div class="d-flex">
+        <div class="d-flex justify-content-between">
             <button type="button" id="restaurant-form-enable" class="btn fd-button">Enable Form</button>
+
+            <div>
+                <a class="btn fd-button <?php echo $pageData === null ? 'fd-disabled' : ''?>" href="restaurantMenu.php">Set Menu</a>
+                <a class="btn fd-button <?php echo $pageData === null ? 'fd-disabled' : ''?>" href="restaurantMenu.php" >Set Tables and Bookings</a>
+                <a class="btn fd-button <?php echo $pageData === null ? 'fd-disabled' : ''?>" href="restaurantMenu.php" >View Orders</a>
+            </div>
+
         </div>
 
         <form action="userPageRestaurant.php" method="post">

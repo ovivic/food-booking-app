@@ -12,6 +12,8 @@ class APIUtil
     public const UPDATE_SUCCESSFUL = 10100;
     public const UPDATE_FAIL = 10101;
 
+    public const MISSING_DATA = 20000;
+
     public static function validateUserJson() {
 
     }

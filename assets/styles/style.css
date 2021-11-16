@@ -4,6 +4,8 @@
     --primary: #ffb400;
     --secondary: #fccd50;
 
+    --disabled: #ffdf90;
+
     --footer-gray: #27272b;
     --softer-black: #404044;
 
@@ -32,6 +34,16 @@ div.fd-section-delim {
     margin-bottom: 1.5rem;
     padding: 1px;
     background-color: var(--secondary);
+}
+
+a.fd-button {
+    color: black;
+}
+
+a.fd-button.fd-disabled {
+    pointer-events: none;
+    color: rgba(0, 0, 0, 0.3);
+    background-color: var(--disabled);
 }
 
 /* NAVBAR */
