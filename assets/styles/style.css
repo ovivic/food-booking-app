@@ -206,6 +206,7 @@ a.fd-button.fd-disabled {
     text-align: center;
 }
 
+.fd-rest-page-table,
 .fd-rest-page-menu-item {
     -webkit-box-shadow: 0 10px 6px -6px #777;
     -moz-box-shadow: 0 10px 6px -6px #777;

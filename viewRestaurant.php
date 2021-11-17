@@ -14,6 +14,55 @@ function getMenuItemDiv($menuItem)
     ';
 }
 
+function getRestaurantTableDiv($table, $restaurantId)
+{
+    $wrapperDivStart = '<div class="col-auto mb-1">';
+    $wrapperDivEnd = '</div>';
+
+    $formSelect = '<select class="form-control" name="tableSelectedSeats" required>';
+
+    $formSelect .= '<option value="0">Choose Seats...</option>';
+
+    for ($i = 1; $i <= $table["max_seats"]; $i += 1 )
+    {
+        if ($i == 1)
+        {
+            $formSelect .= '<option value="' . $i . '">' . $i . ' Seat</option>';
+        }
+        else
+        {
+            $formSelect .= '<option value="' . $i . '">' . $i . ' Seats</option>';
+        }
+
+    }
+
+    $formSelect .= '</select>';
+
+    $formDate = '<input class="form-control" type="date" name="tableSelectedDate" required>';
+
+    $formSubmit = '<button type="submit" class="btn fd-button">Add</button>';
+
+    $form = '<form class="form-inline" action="viewRestaurant.php?restaurantId=' . $restaurantId . '" method="post">';
+
+    $form .= $wrapperDivStart . $formSelect . $wrapperDivEnd;
+    $form .= $wrapperDivStart . $formDate . $wrapperDivEnd;
+    $form .= $wrapperDivStart . $formSubmit . $wrapperDivEnd;
+
+    $form .= '</form>';
+
+    return '
+        <div class="fd-rest-page-table">
+            <div class="row">
+                <div class="col d-flex justify-content-between">
+                    <p style="font-weight: bold">' . $table["name"] . '</p>
+                    <p><span style="font-weight: bold">Max: </span>' . $table["max_seats"] . ' </p>        
+                </div>
+                <div class="col"><div class="form-row">' . $form . '</div></div>
+            </div>
+        </div>
+    ';
+}
+
 $restaurantId = null;
 
 if (isset($_GET["restaurantId"]) && $_GET["restaurantId"])
@@ -62,7 +111,7 @@ if ($pageData["restaurant"]["dine_in"])
     }
 }
 
-var_dump($pageData);
+//var_dump($pageData);
 
 ?>
 
@@ -108,13 +157,29 @@ var_dump($pageData);
             <p>Please find bellow the menu. Click on an item to add it to the cart for delivery.</p>
 
             <?php
-
+                // create menu items
                 foreach ($pageData["menu"] as $menuItem)
                 {
                     echo getMenuItemDiv($menuItem);
                 }
 
             ?>
+
+            <?php if ($pageData["restaurant"]["dine_in"]) { ?>
+                <div class="fd-section-delim"></div>
+
+                <h3>Tables</h3>
+                <p>Find below a list of tables that the restaurant has available for a booking.</p>
+
+                <?php
+                // create menu items
+                foreach ($pageData["restaurantTables"] as $table)
+                {
+                    echo getRestaurantTableDiv($table, $pageData["restaurant"]["id"]);
+                }
+
+                ?>
+            <?php } ?>
 
         </div>
     </div>
