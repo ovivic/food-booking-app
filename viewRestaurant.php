@@ -42,7 +42,13 @@ function getRestaurantTableDiv($table, $restaurantId)
 
     $formSubmit = '<button type="submit" class="btn fd-button">Add</button>';
 
+    $formHiddenType = '<input type="hidden" name="restViewFormType" value="' . SiteUtil::RESTAURANT_VIEW_PAGE_ADD_BOOKING . '">';
+    $formHiddenTableId = '<input type="hidden" name="tabletableId" value="' . $table["id"] . '">';
+
     $form = '<form class="form-inline" action="viewRestaurant.php?restaurantId=' . $restaurantId . '" method="post">';
+
+    $form .= $formHiddenType;
+    $form .= $formHiddenTableId;
 
     $form .= $wrapperDivStart . $formSelect . $wrapperDivEnd;
     $form .= $wrapperDivStart . $formDate . $wrapperDivEnd;
@@ -109,9 +115,75 @@ if ($pageData["restaurant"]["dine_in"])
     if (isset($restTableData["records"])) {
         $pageData["restaurantTables"] = $restTableData["records"];
     }
+
+    $tableBookingData = APIUtil::getApiRequest(TableBookingController::API_READ_ALL . "?restaurantId=" . $pageData["restaurant"]["id"]);
+
+    if (isset($tableBookingData["records"]))
+    {
+        $bookings = [];
+
+        foreach ($tableBookingData["records"] as $booking)
+        {
+            $bookings[$booking["id"]] = $booking;
+        }
+
+        $pageData["tableBookings"] = $bookings;
+    }
 }
 
-//var_dump($pageData);
+//var_dump($pageData["tableBookings"]);
+
+$tableId = $selectedSeats = $selectedDate = $formattedDate = '';
+$selectedSeatsErr = $selectedDateErr = '';
+$tableBookingFormError = false;
+$bookingAdded = false;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["restViewFormType"])) {
+    if ($_POST["restViewFormType"] == SiteUtil::RESTAURANT_VIEW_PAGE_ADD_BOOKING) // the password reset form was submitted
+    {
+        if(!empty($_POST["tabletableId"])) {
+            $tableId = $_POST["tabletableId"];
+        }
+
+        if (isset($_POST["tableSelectedSeats"]) && $_POST["tableSelectedSeats"] == 0)
+        {
+            $selectedSeatsErr = "Please select the number of seats you would like to book.";
+            $tableBookingFormError = true;
+        }
+        else
+        {
+            $selectedSeats = $_POST["tableSelectedSeats"];
+        }
+
+        if (empty($_POST["tableSelectedDate"]))
+        {
+            $selectedDateErr = "Please choose the date of the booking.";
+            $tableBookingFormError = true;
+        }
+        else
+        {
+            $selectedDate = $_POST["tableSelectedDate"];
+        }
+
+        if (!$tableBookingFormError)
+        {
+            $bookingAddFormData = [
+                "restaurant_id" => $restaurantId,
+                "table_id" => $tableId,
+                "user_id" => SiteUtil::getUserInfoFromSession("id"),
+                "date" => $selectedDate,
+                "seats" => $selectedSeats
+            ];
+
+            $bookingAddResponse = json_decode(APIUtil::postApiRequest(TableBookingController::API_CREATE, json_encode($bookingAddFormData)) , true);
+
+            if ($bookingAddResponse["status"] == APIUtil::CREATE_SUCCESSFUL)
+            {
+                $bookingAdded = true;
+            }
+        }
+    }
+}
 
 ?>
 
@@ -171,12 +243,28 @@ if ($pageData["restaurant"]["dine_in"])
                 <h3>Tables</h3>
                 <p>Find below a list of tables that the restaurant has available for a booking.</p>
 
+                <?php if ($tableBookingFormError) { ?>
+                    <div class="alert alert-danger" role="alert">
+                        <i class="bi bi-x-circle"></i> There are errors in the form. Please make sure you select both the number of people attending and the date of the booking.
+                    </div>
+                <?php } ?>
+
+                <?php if (!$tableBookingFormError && $bookingAdded == true) { ?>
+                    <div class="alert alert-success" role="alert">
+                        <i class="bi bi-check-circle"></i> Your booking for the date of <?php echo $selectedDate ?> has been added successfully.
+                    </div>
+                <?php } elseif (!$tableBookingFormError && $bookingAdded == true) { ?>
+                    <div class="alert alert-danger" role="alert">
+                        <i class="bi bi-x-circle"></i> There is an issue with the creation of the booking. Please refresh the page and try again.
+                    </div>
+                <?php } ?>
+
                 <?php
-                // create menu items
-                foreach ($pageData["restaurantTables"] as $table)
-                {
-                    echo getRestaurantTableDiv($table, $pageData["restaurant"]["id"]);
-                }
+                    // create menu items
+                    foreach ($pageData["restaurantTables"] as $table)
+                    {
+                        echo getRestaurantTableDiv($table, $pageData["restaurant"]["id"]);
+                    }
 
                 ?>
             <?php } ?>
