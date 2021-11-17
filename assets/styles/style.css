@@ -93,6 +93,8 @@ a.fd-button.fd-disabled {
 
 /* HOME PAGE FORM */
 .fd-homepage-form {
+    padding: 30px;
+
     width: 600px;
     height: 200px;
     background: #ffffff;
@@ -188,12 +190,33 @@ a.fd-button.fd-disabled {
     background-color: var(--primary);
 }
 
-
+.fd-rest-page-heading,
 .fd-form-page-heading {
     text-align: center;
     margin: 50px 0;
 
     font-family: 'Noto Sans', sans-serif;
+}
+
+.fd-rest-page-heading {
+    margin-bottom: 20px;
+}
+
+.fd-rest-page-subheading {
+    text-align: center;
+}
+
+.fd-rest-page-menu-item {
+    -webkit-box-shadow: 0 10px 6px -6px #777;
+    -moz-box-shadow: 0 10px 6px -6px #777;
+    box-shadow: 0 10px 6px -6px #777;
+
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.fd-rest-page-menu-item:hover {
+    background-color: var(--primary);
 }
 
 .fd-form-footer {
@@ -224,4 +247,9 @@ a.fd-button.fd-disabled {
 
 form.fd-menu-item-delete-form {
     margin-bottom: 0;
+}
+
+.fd-card-header {
+    height: 20px;
+    background-color: var(--secondary);
 }

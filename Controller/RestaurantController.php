@@ -43,6 +43,19 @@ class RestaurantController extends BaseController
         return false;
     }
 
+    public function readByRestaurantId($restaurantId)
+    {
+        /** @var Restaurant $restaurant */
+        $restaurant = $this->restaurantModel->readOneByProperty("id", $restaurantId);
+
+        if ($restaurant !== null) {
+            return $this->returnJsonEncodedArray([$restaurant]);
+        }
+
+        // TODO Handle when address cannot be found
+        return false;
+    }
+
     /**
      * "/api/restaurant/create" Endpoint - Create Restaurant record
      * @param $jsonData

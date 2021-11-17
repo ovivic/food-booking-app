@@ -8,16 +8,16 @@ header('Content-Type: application/json');
 
 require __DIR__ . "/../../config/main.php";
 
-$userId = '';
+$userId = null;
 if (isset($_GET["userId"]) && $_GET["userId"] > 0)
 {
     $userId = $_GET["userId"];
 }
-else
+
+$restaurantId = null;
+if (isset($_GET["restaurantId"]) && $_GET["restaurantId"] > 0)
 {
-    // do not move forward if there is no id present
-    // may need to add some other things to happen
-    die("Need user ID for read_one API");
+    $restaurantId = $_GET["restaurantId"];
 }
 
 $restaurantModel = new RestaurantModel();
@@ -25,9 +25,14 @@ $restaurantController = new RestaurantController($restaurantModel);
 
 $responseData = [];
 
-if ($userId > 0)
+if ($userId !== null && $userId > 0)
 {
     $responseData = $restaurantController->readOneAction($userId);
+}
+
+if ($restaurantId !== null && $restaurantId > 0)
+{
+    $responseData = $restaurantController->readByRestaurantId($restaurantId);
 }
 
 echo json_encode($responseData);

@@ -24,11 +24,11 @@
         return '
             <div class="col-lg-4">
                 <div class="card fd-restaurant-card">
-                    <img class="card-img-top" src="https://dummyimage.com/600x200/000/fff.jpg" alt="Card image cap">
+                    <div class="fd-card-header"></div>
                     <div class="card-body">
                         <h5 class="card-title">' . $restaurantObject["name"] . '</h5>
-                        <p class="card-text">' . $restaurantObject["email"] . '</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                        <p class="card-text">' . $restaurantObject["phone"] . '</p>
+                        <a href="viewRestaurant.php?restaurantId=' . $restaurantObject["id"] . '" class="btn fd-button">View</a>
                     </div>
                 </div>
             </div>
@@ -53,10 +53,10 @@
             <div class="row">
                 <div class="col-md-2"></div>
                 <div class="col-md-4">
-                    <a class="btn btn-primary fd-homepage-form-button" href="#">BOOK TABLE</a>
+                    <a class="btn fd-button" href="#">BOOK TABLE</a>
                 </div>
                 <div class="col-md-4">
-                    <a class="btn btn-primary fd-homepage-form-button" href="#">FIND DELIVERY</a>
+                    <a class="btn fd-button" href="#">FIND DELIVERY</a>
                 </div>
                 <div class="col-md-2"></div>
 
