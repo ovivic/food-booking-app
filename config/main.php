@@ -50,3 +50,10 @@ require_once PROJECT_ROOT_PATH . "/Entity/MenuItem.php";
 require_once PROJECT_ROOT_PATH . "/Controller/RestaurantTableController.php";
 require_once PROJECT_ROOT_PATH . "/Model/RestaurantTableModel.php";
 require_once PROJECT_ROOT_PATH . "/Entity/RestaurantTable.php";
+
+/**
+ * Load TableBooking classes
+ */
+require_once PROJECT_ROOT_PATH . "/Controller/TableBookingController.php";
+require_once PROJECT_ROOT_PATH . "/Model/TableBookingModel.php";
+require_once PROJECT_ROOT_PATH . "/Entity/TableBooking.php";
