@@ -38,6 +38,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["cartFormType"]))
 
         header("Location: removeFromCart.php?itemId=" . $itemId);
     }
+
+    if ($_POST["cartFormType"] == SiteUtil::CART_PAGE_SUBMIT_ORDER) {
+        $date = date("Y-m-d");
+
+        $orderData = [
+            "restaurant_id" => $pageData["restaurant"]["id"],
+            "user_id" => SiteUtil::getUserInfoFromSession("id"),
+            "address" => SiteUtil::getUserInfoFromSession("address"),
+            "total" => $_SESSION["cart"]["total"],
+            "date" => $date
+        ];
+
+        $orderCreateResponse = json_decode(APIUtil::postApiRequest(DeliveryOrderController::API_CREATE, json_encode($orderData)), true);
+
+        if ($orderCreateResponse["status"] == APIUtil::CREATE_SUCCESSFUL)
+        {
+            unset($_SESSION["cart"]);
+            header("Location: orderConfirmation.php");
+        }
+    }
 }
 
 ?>
@@ -99,6 +119,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["cartFormType"]))
 
                     echo $tableRow;
                 }
+
+                $_SESSION["cart"]["total"] = $cartTotal;
             ?>
             <tr>
                 <th colspan="3" class="text-right">Order Total:</th>
@@ -112,6 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["cartFormType"]))
         <div class="d-flex justify-content-between mb-3">
             <h3>Your Details</h3>
             <form action="orderCart.php" method="post">
+                <input type='hidden' name='cartFormType' value='<?php echo SiteUtil::CART_PAGE_SUBMIT_ORDER; ?>'>
                 <button type="submit" class="btn fd-button">Send Order</button>
             </form>
         </div>
