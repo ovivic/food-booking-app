@@ -6,6 +6,7 @@ class SiteUtil
     public const USER_PAGE_PASSWORD_RESET_FORM = 10;
     public const USER_PAGE_ADDRESS_FORM = 11;
     public const USER_PAGE_RESTAURANT_FORM = 12;
+    public const USER_PAGE_TABLE_BOOKING_DELETE_FORM = 13;
 
     public const RESTAURANT_MENU_PAGE_DELETE_ITEM = 10;
     public const RESTAURANT_MENU_PAGE_ADD_ITEM = 11;

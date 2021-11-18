@@ -80,9 +80,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["restTablesFormType"]))
                 "max_seats" => $restTableSeats
             ];
 
-            var_dump($restTableFormData);
-            var_dump(json_encode($restTableFormData));
-
             $restTableAddResponse = json_decode(APIUtil::postApiRequest(RestaurantTableController::API_CREATE, json_encode($restTableFormData)), true);
 
             if (isset($restTableAddResponse["status"]) == APIUtil::CREATE_SUCCESSFUL)

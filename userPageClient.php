@@ -16,6 +16,15 @@ if ($clientAddress !== null) {
     $_SESSION["userData"]["address"] = $clientAddress["records"][0]["addressString"];
 }
 
+$pageData = [];
+
+$tableBookingsData = APIUtil::getApiRequest(TableBookingController::API_READ_ALL . '?userId=' . SiteUtil::getUserInfoFromSession("id"));
+
+if (isset($tableBookingsData["records"]))
+{
+    $pageData["bookings"] = $tableBookingsData["records"];
+}
+
 $password = '';
 $isErrorPassChange = false;
 $isPasswordFormValid = false;
@@ -138,6 +147,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userPageFormType"])) {
         }
     }
 
+    if ($_POST["userPageFormType"] == SiteUtil::USER_PAGE_TABLE_BOOKING_DELETE_FORM)
+    {
+        $bookingId = $_POST["tableBookingId"];
+
+        $bookingDeleteResponse = json_decode(APIUtil::deleteApiRequest(TableBookingController::API_DELETE . "?tableBookingId=" . $bookingId), true);
+
+        // redirect to this page to reload page data
+        if ($bookingDeleteResponse["status"] == APIUtil::DELETE_SUCCESSFUL)
+        {
+            header("Location: userPageClient.php");
+        }
+    }
+
 
 }
 
@@ -160,7 +182,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userPageFormType"])) {
 
     <h1 class="fd-form-page-heading">Account Details</h1>
     <div class="fd-form-container">
-        <h3>Personal Details</h3>
+
+        <div class="d-flex justify-content-between">
+            <h3>Personal Details</h3>
+            <div>
+                <a href="#user-delivery-orders" class="btn fd-button">View Deliveries</a>
+                <a href="#user-eatin-bookings" class="btn fd-button">View Bookings</a>
+            </div>
+        </div>
+
         <div class="fd-user-detail-container">
             <p><span>Name: </span><?php echo SiteUtil::getUserInfoFromSession("name"); ?></p>
         </div>
@@ -256,9 +286,53 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["userPageFormType"])) {
 
     </div>
 
-    <h1 class="fd-form-page-heading">Past Orders</h1>
+    <h1 class="fd-form-page-heading" id="user-delivery-orders">Delivery Orders</h1>
     <div class="fd-form-container">
 
+    </div>
+
+    <h1 class="fd-form-page-heading" id="user-eatin-bookings">Eat In Bookings</h1>
+    <div class="fd-form-container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Restaurant Name</th>
+                <th scope="col">Table</th>
+                <th scope="col">Seats</th>
+                <th scope="col">Date</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+                $counter = 1;
+                foreach ($pageData["bookings"] as $booking)
+                {
+                    $tableRow = "<tr><th scope=\"row\">" . $counter . "</th>";
+
+                    $tableRow .= "<td>" . $booking["restaurant_id"] . "</td>";
+                    $tableRow .= "<td>" . $booking["table_id"] . "</td>";
+                    $tableRow .= "<td>" . $booking["seats"] . "</td>";
+                    $tableRow .= "<td>" . $booking["date"] . "</td>";
+
+                    $deleteForm = "<form class='fd-menu-item-delete-form' method='POST' action='userPageClient.php'>";
+                    $deleteForm .= "<input type='hidden' name='userPageFormType' value='" . SiteUtil::USER_PAGE_TABLE_BOOKING_DELETE_FORM . "'>";
+                    $deleteForm .= "<input type='hidden' name='tableBookingId' value='" . $booking["id"] . "'>";
+                    $deleteForm .= "<button type='submit' id='rest-table-delete" . $counter . "' class='btn fd-button'>Delete</button>";
+                    $deleteForm .= "</form>";
+
+                    $tableRow .= "<td>" . $deleteForm . "</td>";
+
+                    $tableRow .= "</tr>";
+
+                    $counter += 1;
+
+                    echo $tableRow;
+                }
+            ?>
+            </tbody>
+        </table>
     </div>
 
 </div>
