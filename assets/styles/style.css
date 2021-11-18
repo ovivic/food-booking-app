@@ -254,3 +254,7 @@ form.fd-menu-item-delete-form {
     height: 20px;
     background-color: var(--secondary);
 }
+
+.fd-table-bookings-header {
+    border-bottom: 2px solid var(--primary);
+}

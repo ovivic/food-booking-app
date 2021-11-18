@@ -15,6 +15,8 @@ class SiteUtil
 
     public const RESTAURANT_VIEW_PAGE_ADD_BOOKING = 10;
 
+    public const TABLE_BOOKING_PAGE_DELETE = 10;
+
     /* ERROR PAGE */
     public const ERROR_CANNOT_ACCESS = 1;
     public const ERROR_NO_RESTAURANT = 2;

@@ -114,7 +114,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["restTablesFormType"]))
 
         <div class="d-flex justify-content-between mb-3">
             <p>Complete the form to add a table. After adding it will appear in the table bellow.</p>
-            <a class="btn fd-button" href="userPageRestaurant.php">Restaurant Page</a>
+            <div>
+                <a class="btn fd-button" href="restaurantTableBooking.php"><i class="bi bi-folder"></i> View Table Bookings</a>
+                <a class="btn fd-button" href="userPageRestaurant.php">Restaurant Page</a>
+            </div>
+
         </div>
 
         <?php if ($restTableDeleteFormError) { ?>

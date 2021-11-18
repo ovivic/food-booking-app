@@ -4,6 +4,13 @@ require 'config/main.php';
 
 session_start();
 
+
+$userLoggedIn = false;
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"]) {
+    $userLoggedIn = true;
+}
+
+
 function getMenuItemDiv($menuItem)
 {
     return '
@@ -14,7 +21,7 @@ function getMenuItemDiv($menuItem)
     ';
 }
 
-function getRestaurantTableDiv($table, $restaurantId)
+function getRestaurantTableDiv($table, $restaurantId, $userLoggedIn)
 {
     $wrapperDivStart = '<div class="col-auto mb-1">';
     $wrapperDivEnd = '</div>';
@@ -61,9 +68,9 @@ function getRestaurantTableDiv($table, $restaurantId)
             <div class="row">
                 <div class="col d-flex justify-content-between">
                     <p style="font-weight: bold">' . $table["name"] . '</p>
-                    <p><span style="font-weight: bold">Max: </span>' . $table["max_seats"] . ' </p>        
+                    <p><span style="font-weight: bold">Seating: </span>' . $table["max_seats"] . ' </p>        
                 </div>
-                <div class="col"><div class="form-row">' . $form . '</div></div>
+                <div class="col"><div class="form-row">' . ($userLoggedIn ? $form: '') . '</div></div>
             </div>
         </div>
     ';
@@ -263,7 +270,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["restViewFormType"])) {
                     // create menu items
                     foreach ($pageData["restaurantTables"] as $table)
                     {
-                        echo getRestaurantTableDiv($table, $pageData["restaurant"]["id"]);
+                        echo getRestaurantTableDiv($table, $pageData["restaurant"]["id"], $userLoggedIn);
                     }
 
                 ?>
