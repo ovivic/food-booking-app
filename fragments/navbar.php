@@ -37,6 +37,11 @@ function getUserPageLink(string $destination)
 
                         ?>
                     </li>
+                    <?php if(isset($_SESSION["cart"])) { ?>
+                        <li class="nav-item ">
+                            <a class="nav-link fd-nav-link" href="orderCart.php"><i class="bi bi-cart4"></i> View Cart</a>
+                        </li>
+                    <?php } ?>
                     <li class="nav-item ">
                         <a class="nav-link fd-nav-link" href="logout.php">Log Out</a>
                     </li>

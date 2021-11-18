@@ -15,8 +15,12 @@ class SiteUtil
     public const RESTAURANT_TABLES_PAGE_ADD_TABLE = 11;
 
     public const RESTAURANT_VIEW_PAGE_ADD_BOOKING = 10;
+    public const RESTAURANT_VIEW_PAGE_ADD_TO_CART = 11;
 
     public const TABLE_BOOKING_PAGE_DELETE = 10;
+
+    public const CART_PAGE_REMOVE_ITEM = 10;
+    public const CART_PAGE_SUBMIT_ORDER = 11;
 
     /* ERROR PAGE */
     public const ERROR_CANNOT_ACCESS = 1;

@@ -2,6 +2,8 @@
 
 session_start();
 
+require 'config/main.php';
+
 $errorType = 0;
 if (isset($_GET["errorType"])) {
     $errorType = $_GET["errorType"];

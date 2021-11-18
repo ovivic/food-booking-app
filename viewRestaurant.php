@@ -13,11 +13,29 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"]) {
 
 function getMenuItemDiv($menuItem)
 {
+    $formHiddenType = '<input type="hidden" name="restViewFormType" value="' . SiteUtil::RESTAURANT_VIEW_PAGE_ADD_TO_CART . '">';
+    $formHiddenMenuId = '<input type="hidden" name="itemId" value="' . $menuItem["id"] . '">';
+
+    $formSubmit = '<button type="submit" class="btn fd-button">Add to Cart</button>';
+
+    $cartForm = "<form action='viewRestaurant.php?restaurantId=" . $menuItem["restaurant_id"] . "' method='post'>";
+
+    $cartForm .= $formHiddenType;
+    $cartForm .= $formHiddenMenuId;
+    $cartForm .= $formSubmit;
+
+    $cartForm .= "</form>";
+
     return '
         <div class="d-flex justify-content-between fd-rest-page-menu-item">
             <p style="font-weight: bold">' . $menuItem["name"] . '</p>
-            <p> ' . SiteUtil::formatCurrency($menuItem["price"]) . ' </p>
+            
+            <div>
+                <p> ' . SiteUtil::formatCurrency($menuItem["price"]) . ' </p>
+                ' . $cartForm . '
+            </div>
         </div>
+        
     ';
 }
 
@@ -146,7 +164,7 @@ $tableBookingFormError = false;
 $bookingAdded = false;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["restViewFormType"])) {
-    if ($_POST["restViewFormType"] == SiteUtil::RESTAURANT_VIEW_PAGE_ADD_BOOKING) // the password reset form was submitted
+    if ($_POST["restViewFormType"] == SiteUtil::RESTAURANT_VIEW_PAGE_ADD_BOOKING)
     {
         if(!empty($_POST["tabletableId"])) {
             $tableId = $_POST["tabletableId"];
@@ -189,6 +207,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["restViewFormType"])) {
                 $bookingAdded = true;
             }
         }
+    }
+
+    if ($_POST["restViewFormType"] == SiteUtil::RESTAURANT_VIEW_PAGE_ADD_TO_CART)
+    {
+        $itemId = $_POST["itemId"];
+
+        $itemArray = [];
+
+        foreach ($pageData["menu"] as $menuItem)
+        {
+            if ($menuItem["id"] == $itemId)
+            {
+                $itemArray = $menuItem;
+                break;
+            }
+        }
+
+        header("Location: addToCart.php?restaurantId=" . $restaurantId . "&item=" . json_encode($itemArray));
     }
 }
 
