@@ -1,7 +1,7 @@
 <?php
 
 // HACK to turn off some notices being thrown by the UserModel which cause the API return to fail
-error_reporting(0);
+//error_reporting(0);
 
 define("PROJECT_ROOT_PATH", __DIR__ . "/../");
 define("PROJECT_FOLDER_NAME", "food-booking-app");
@@ -57,3 +57,10 @@ require_once PROJECT_ROOT_PATH . "/Entity/RestaurantTable.php";
 require_once PROJECT_ROOT_PATH . "/Controller/TableBookingController.php";
 require_once PROJECT_ROOT_PATH . "/Model/TableBookingModel.php";
 require_once PROJECT_ROOT_PATH . "/Entity/TableBooking.php";
+
+/**
+ * Load DeliveryOrder classes
+ */
+require_once PROJECT_ROOT_PATH . "/Controller/DeliveryOrderController.php";
+require_once PROJECT_ROOT_PATH . "/Model/DeliveryOrderModel.php";
+require_once PROJECT_ROOT_PATH . "/Entity/DeliveryOrder.php";
