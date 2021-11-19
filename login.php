@@ -49,13 +49,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!$isError) {
         $requestResponse = json_decode(APIUtil::postApiRequest(UserController::API_LOGIN, json_encode($dataArray)), true);
 
-
         if ($requestResponse["status"] == APIUtil::LOGIN_SUCCESSFUL) {
             session_start();
 
             $_SESSION["loggedin"] = true;
             $_SESSION["userData"] = $requestResponse["user"];
-            $_SESSION["cart"] = [];
+
+            $userAddressResponse = APIUtil::getApiRequest(AddressController::API_READ_ONE . "?entityId=" . SiteUtil::getUserInfoFromSession("id"));
+
+            if (isset($userAddressResponse["records"]))
+            {
+                $_SESSION["userData"]["address"] = $userAddressResponse["records"][0]["addressString"];
+            }
 
             header("Location: index.php");
         } else {

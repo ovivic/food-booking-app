@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["cartFormType"]))
             "restaurant_id" => $pageData["restaurant"]["id"],
             "user_id" => SiteUtil::getUserInfoFromSession("id"),
             "address" => SiteUtil::getUserInfoFromSession("address"),
-            "total" => $_SESSION["cart"]["total"],
+            "total" => isset($_SESSION["cart"]["total"]) ? $_SESSION["cart"]["total"] : null,
             "date" => $date
         ];
 
@@ -55,6 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["cartFormType"]))
         if ($orderCreateResponse["status"] == APIUtil::CREATE_SUCCESSFUL)
         {
             unset($_SESSION["cart"]);
+
             header("Location: orderConfirmation.php");
         }
     }

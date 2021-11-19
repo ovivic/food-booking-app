@@ -1,5 +1,4 @@
 <?php
-
     require 'config/main.php';
 
     session_start();

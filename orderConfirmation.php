@@ -10,6 +10,8 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"]) {
     $userLoggedIn = true;
 }
 
+// HACK to fix the cart
+unset($_SESSION["cart"]);
 
 ?>
 
